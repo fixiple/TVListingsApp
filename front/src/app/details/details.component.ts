@@ -16,6 +16,12 @@ import { ActivatedRoute } from '@angular/router';
 export class DetailsComponent {
 
     private details : any;
+    
+    /**
+     * The response variable after making the API request.
+     * It contains the data of the API request, allowing interactivity with the API in the front-end.
+     * ex: getting the name of a TV Show or anime: {{response.name}}
+    **/
     response: any;
 
     constructor(private API : API, private route : ActivatedRoute){}
@@ -25,7 +31,7 @@ export class DetailsComponent {
             let media_type = params['cat'];
             let id = +params['id']; //+ transforms string into integer/number, see: https://stackoverflow.com/a/41969665
             
-            console.log(media_type)
+            // console.log(media_type)
             // console.log(id); 
             // this will be called every time route changes
             // so you can perform your functionality here

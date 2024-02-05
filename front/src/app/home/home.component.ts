@@ -14,7 +14,14 @@ import { Router } from '@angular/router';
 })
 
 export class HomeComponent {
+    
+    /**
+     * The response variable after making the API request.
+     * It contains the data of the API request, allowing interactivity with the API in the front-end.
+     * ex: getting the name of a TV Show or anime: {{response.name}}
+    **/
     response: any;
+
     // done: boolean = false;
     // /!\ we need to declare the list variables (= []) so that we can push data into them
     // titles: string[] = [];
@@ -35,14 +42,14 @@ export class HomeComponent {
 
     searchCall(req: string){
 
-        this.API.get(req)
+        this.API.searchQuery(req)
         .pipe(
             map((data:any) => {
                 //console.log(data.results)
                 
                 // we fetch the results part of the json and assign it to response variable
-                this.response=data.results
-
+                
+                this.response=data
             })
         )
         .subscribe(

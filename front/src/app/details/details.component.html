@@ -1,5 +1,9 @@
-<p>details works!</p>
 <div class="response">
     <h1>{{response.name || response.original_title}}</h1>
     <h5>{{response.first_air_date || response.release_date}}</h5>
+    <p>{{response.overview}}</p>
+    <p>{{response.runtime}}</p>
+    <div *ngFor="let genre of response.genres">
+        <p>{{genre.name}}</p>
+    </div>
 </div>

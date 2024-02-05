@@ -13,9 +13,13 @@ export default class API{
     constructor(private http: HttpClient) { }
     headers=new HttpHeaders();
 
-    // response: any;
-    
-    public get(query_string : string, page_number : Number = 1 ) : any {
+    /**
+     * Makes a search query in the TMDB API, searching for  for movies, TV shows and people in a single request.
+     * @param {String} query_string  The movie/TV Show/Anime you wanna research
+     * @param {String} language  The language we wanna get the data back as (ex: "en-US" for  United States English)
+     * @returns {JSON} Returns JSON object containing data of the querySearch (but need to subscribe...)
+    **/
+    public searchQuery(query_string : string,page_number : Number = 1, language : String = "en" ) : any {
         this.headers.append('accept','application/json')
         const httpOptions = {
             headers: this.headers 
@@ -25,65 +29,72 @@ export default class API{
             url,
             httpOptions
         )
-        // .subscribe({
-        //     //eighter using function or observer object
-        //     val => this.response = val.json(),
-        //     error: (error) => console.error("error: ", error.error.status_message)
-        // });
-        // return this.response;
     }
 
-    public getDetailsTv(series_ID : number, page_number : Number = 1 ) : any {
+    /**
+     * Get The Details about a certain movie.
+     * @param {number} series_ID  The ID of a articular TV Series or Anime (ex: 872585)
+     * @param {String} language  The language we wanna get the data back as (ex: "en-US" for  United States English)
+     * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
+    **/
+    public getDetailsTv(series_ID : number, language : String = "en" ) : any {
         this.headers.append('accept','application/json')
         const httpOptions = {
             headers: this.headers 
         };
-        let url=' https://api.themoviedb.org/3/tv/'+series_ID+'?api_key='+API_KEY
+        let url='https://api.themoviedb.org/3/tv/'+series_ID+'?language='+language+'&api_key='+API_KEY
         return this.http.get(
             url,
             httpOptions
         )
-        // .subscribe({
-        //     //eighter using function or observer object
-        //     val => this.response = val.json(),
-        //     error: (error) => console.error("error: ", error.error.status_message)
-        // });
-        // return this.response;
     }
 
-
-    public getDetailsMovies(movie_ID : number, page_number : Number = 1 ) : any {
+    /**
+     * Get The Details about a certain movie.
+     * @param {number} movie_ID  The ID of a articular movie (ex: 872585)
+     * @param {String} language  The language we wanna get the data back as (ex: "en-US" for United States English)
+     * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
+    **/
+    public getDetailsMovies(movie_ID : number, language : String = "en" ) : any {
         this.headers.append('accept','application/json')
         const httpOptions = {
             headers: this.headers 
         };
-        let url=' https://api.themoviedb.org/3/movie/'+movie_ID+'?api_key='+API_KEY
+        let url='https://api.themoviedb.org/3/movie/'+movie_ID+'?language='+language+'&api_key='+API_KEY
         return this.http.get(
             url,
             httpOptions
         )
-        // .subscribe({
-        //     //eighter using function or observer object
-        //     val => this.response = val.json(),
-        //     error: (error) => console.error("error: ", error.error.status_message)
-        // });
-        // return this.response;
     }
 
-    //OTHER METHOD FOUND IN TMDB DOCUMENTATION
-    // public search(query_string: string, page_number: number ) {
-    //     const url = 'https://api.themoviedb.org/3/search/multi?query=${query_string}&page=${page_number}';
-    //     const options = {
-    //     method: 'GET',
-    //     headers: {
-    //         accept: 'application/json',
-    //         Authorization: 'Bearer ${ACCESS_TOKEN}'
-    //         }
-    //     };
-    
-    //     fetch(url, options)
-    //     .then(res => res.json())
-    //     .then(json => console.log(json))
-    //     .catch(err => console.error('error:' + err));
-    // }
+    /**
+    * Get the list of languages (ISO 639-1 tags) used throughout TMDB.
+    **/
+    public getLanguages() : any {
+        this.headers.append('accept','application/json')
+        const httpOptions = {
+            headers: this.headers 
+        };
+        let url='https://api.themoviedb.org/3/configuration/languages'+'?api_key='+API_KEY
+        return this.http.get(
+            url,
+            httpOptions
+        )
+    }
+
+    /**
+    * Get a list of the officially supported translations on TMDB.
+    **/ 
+    public getTranslations() : any {
+        this.headers.append('accept','application/json')
+        const httpOptions = {
+            headers: this.headers 
+        };
+        let url='https://api.themoviedb.org/3/configuration/primary_translations'+'?api_key='+API_KEY
+        return this.http.get(
+            url,
+            httpOptions
+        )
+    }
+
 }
