@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import API  from '../service/API.service';
-import { CommonModule } from '@angular/common';
+import API from '../service/API.service';
+import { CommonModule} from '@angular/common';
 import { map} from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,51 +15,41 @@ import { map} from 'rxjs';
 
 export class HomeComponent {
     response: any;
+    // done: boolean = false;
+    // /!\ we need to declare the list variables (= []) so that we can push data into them
+    // titles: string[] = [];
+    // ids: number[] = []; 
+    // mediaTypes: string[] = [];
 
-    titles?: string[];
-    ids?: number[]; 
-
-    title?: string;
-    id?: number
-    constructor(private API: API) {
-        this.searchCall("The apothecary")
+    constructor(private API: API,  private router : Router) {
+        //this.searchCall("The apothecary")
+        
     }
 
+    clickme(cat: string, id: number){
+        // console.log(id)
+        this.router.navigate(['/details',cat,id]);
+    }
+
+    
+
     searchCall(req: string){
+
         this.API.get(req)
         .pipe(
             map((data:any) => {
-                data.results.map((result:any) => {
-                    // link: https://stackoverflow.com/a/68144628
-                    this.titles?.push(result.name || result.title)
-                    //DEBUG works
-                    // console.log(result.name || result.title)
-                })
+                //console.log(data.results)
+                
+                // we fetch the results part of the json and assign it to response variable
+                this.response=data.results
+
             })
         )
         .subscribe(
-            (val: any) => {
-                //console.log(val)
-                        // this.titles?.push(i["name"])
-                        // this.ids?.push(i["id"])
-                    },
+            (val: any) => {},
             (err: any) => console.error(err),
         )
         
     }
-    ngOnInit() {
-        // this.titles?.map(
-        //     (titleFromList:string) =>{
-        //         console.log("title number ", this.titles?.indexOf(titleFromList), ":", titleFromList)
-        //     }
-        // )
-        // this.API
-        // .get("The Apothecary Diary")
-        // .subscribe((values: any) => {
-        //     this.response=values;
-        //     console.log("HERE");
-        //     //console.log(values["page"]);
-        // })
-        // console.log(this.response.toString())
-    }
+    
 }

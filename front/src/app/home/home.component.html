@@ -1,14 +1,12 @@
 <main class="main">
     <div class="content">
-        <div class="response">
-            <!--GET AN EMPTY RESPONSE, BUT IN CONSOLE WE GET RESPONSE IN XMR... HOW TO NAVIGATE INSIDE OF DATA???-->
-            {{response}}
-            {{title}}
-            {{id}}
+        <div class="response"
+        *ngFor="let data of response">
+            <a style="cursor:pointer" (click)="clickme(data.media_type, data.id);">{{data.id}}</a> {{data.title || data.name}} {{data.media_type}} 
         </div>
         <div class="search-container">
-            <input type="text" placeholder="e.g: Chaisaw Man, Game of Thrones, Star Wars...." name="search" id="search" #search>
-            <input type="button" value="search">
+            <input type="text" placeholder="e.g: Chaisaw Man, Game of Thrones, Star Wars...." name="search" id="searchQuery" #searchQuery>
+            <input type="button" value="search" (click)="searchCall(searchQuery.value)"  (key.enter)="searchCall(searchQuery.value)">
         </div>
         <div id="Releasing">
             
