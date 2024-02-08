@@ -3,20 +3,22 @@ import API from '../service/API.service';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import localStr from '../service/localStr';
 
 
 @Component({
   selector: 'app-details',
   standalone: true,
   imports: [CommonModule],
-  providers: [API],
+  providers: [API, localStr],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
 export class DetailsComponent {
 
-    private details : any;
-    
+    details : any;
+    id : number = 0;
+    media_type : string = "";
     /**
      * The response variable after making the API request.
      * It contains the data of the API request, allowing interactivity with the API in the front-end.
@@ -24,18 +26,18 @@ export class DetailsComponent {
     **/
     response: any;
 
-    constructor(private API : API, private route : ActivatedRoute){}
+    constructor(private API : API, private route : ActivatedRoute, private localStr : localStr){}
     ngOnInit(){
         this.details = this.route.params.subscribe((params: any) => {
             
-            let media_type = params['cat'];
-            let id = +params['id']; //+ transforms string into integer/number, see: https://stackoverflow.com/a/41969665
+            this.media_type = params['cat'];
+            this.id = +params['id']; //+ transforms string into integer/number, see: https://stackoverflow.com/a/41969665
             
             // console.log(media_type)
             // console.log(id); 
             // this will be called every time route changes
             // so you can perform your functionality here
-            this.getDetailsCall(id, media_type)
+            this.getDetailsCall(this.id, this.media_type)
         });
 
     }
@@ -70,6 +72,13 @@ export class DetailsComponent {
                 (err: any) => console.error(err),
             )
         }
+    }
+
+    saveIntoLS(){
+            let IDS = this.localStr.getDataObject("ID_Objects") || []
+            var newID = {"ID": this.id}
+            IDS.push(newID)
+            this.localStr.saveDataObject("ID_Objects", IDS)
     }
 
 }
