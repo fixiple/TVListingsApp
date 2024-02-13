@@ -1,6 +1,6 @@
 <main class="main">
     <div class="content">
-        <!-- ng-container  *ngIf="response.total_results; else elseBlock">
+        <!-- <ng-container  *ngIf="response.total_results; else elseBlock">
             <div class="response" 
             *ngFor="let data of response.results">
                 <a style="cursor:pointer" (click)="clickme(data.media_type, data.id);">
@@ -12,14 +12,14 @@
         <div class="error">
             <p>no results, please check your input...</p>
         </div>
-    </ng-template -->
+    </ng-template> -->
         <div class="search-container">
             <input type="text" placeholder="e.g: Chaisaw Man, Game of Thrones, Star Wars...." name="search" list="suggestions" id="searchQuery" 
             (change)="searchCall(searchQuery.value)" #searchQuery>
-            <ng-container  *ngIf="response.total_results&&response.results?.length>=1;">
+            <ng-container  *ngIf="response.total_results!=null||response.results?.length>=1;">
                 <datalist id="suggestions" >
                     <option *ngFor="let data of response.results" [value]="data.title || data.name">
-                        <a style="cursor:pointer" (click)="clickme(data.media_type, data.id);">
+                        <a style="cursor:pointer" (click)="toDetailsPage(data.media_type, data.id);">
                         {{data.id}} {{data.title || data.name}} {{data.media_type}}
                         </a>
                     </option>
@@ -32,10 +32,20 @@
             </ng-template>
             <input type="button" value="search" (click)="searchCall(searchQuery.value)"  (keydown.enter)="searchCall(searchQuery.value)">
         </div>
-        <div id="Releasing" *ngForIn="let data in lsIDS">
-                {{data.ID}}
+
+        <div id="Releasing">
+            <div id="data" *ngIf="SeriesData!=null">
+                <ng-container>
+                    <a style="cursor:pointer" 
+                    *ngFor="let data of SeriesData; index as i"
+                    (click)="toDetailsPage(getMediaType(i), data.id);">
+                       {{i}} {{data.title || data.name}}
+                    </a>
+                </ng-container>
+            </div>
         </div>
-        <div id="watched" >
+
+        <div id="watched">
         </div>
     </div>
 </main>

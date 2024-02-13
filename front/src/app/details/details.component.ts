@@ -75,10 +75,12 @@ export class DetailsComponent {
     }
 
     saveIntoLS(){
-            let IDS = this.localStr.getDataObject("ID_Objects") || []
-            var newID = {"ID": this.id}
-            IDS.push(newID)
-            this.localStr.saveDataObject("ID_Objects", IDS)
+            let Saved_Objects = this.localStr.getDataObject("Saved_Objects") || []
+            var newObject = {"ID": this.id,
+                        "Media_Type": this.media_type, 
+                        "Watched": false}
+            Saved_Objects.push(newObject)
+            this.localStr.saveDataObject("Saved_Objects", Saved_Objects)
     }
 
 }
