@@ -19,12 +19,13 @@ export class DetailsComponent {
     details : any;
     id : number = 0;
     media_type : string = "";
+    existsLS: boolean = false;
     /**
      * The response variable after making the API request.
      * It contains the data of the API request, allowing interactivity with the API in the front-end.
      * ex: getting the name of a TV Show or anime: {{response.name}}
     **/
-    response: any;
+    response: any = {};
 
     constructor(private API : API, private route : ActivatedRoute, private localStr : localStr){}
     ngOnInit(){
@@ -40,6 +41,7 @@ export class DetailsComponent {
             this.getDetailsCall(this.id, this.media_type)
         });
 
+        this.AlreadyInLS()
     }
       ngOnDestroy() {
         this.details.unsubscribe();
@@ -74,6 +76,9 @@ export class DetailsComponent {
         }
     }
 
+    /**
+     * This method saves the current data's ID and MediaType in localStorage (Object Format)
+     */
     saveIntoLS(){
             let Saved_Objects = this.localStr.getDataObject("Saved_Objects") || []
             var newObject = {"ID": this.id,
@@ -83,4 +88,17 @@ export class DetailsComponent {
             this.localStr.saveDataObject("Saved_Objects", Saved_Objects)
     }
 
+    /**
+     * This methos verifies if the Object ID matches the URL ID, if true: makes the HTML button 'Add' disappear
+     */
+    AlreadyInLS(){
+        let Objects = this.localStr.getDataObject("Saved_Objects")
+        let dat = Objects.find((data: { ID: number; }) => {
+            if (data.ID === this.id)
+            {
+                this.existsLS=true;
+            }
+        })  
+        console.log(this.existsLS)
+    }
 }

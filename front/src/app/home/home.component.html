@@ -1,38 +1,9 @@
 <main class="main">
     <div class="content">
-        <!-- <ng-container  *ngIf="response.total_results; else elseBlock">
-            <div class="response" 
-            *ngFor="let data of response.results">
-                <a style="cursor:pointer" (click)="clickme(data.media_type, data.id);">
-                    {{data.id}}
-                </a> {{data.title || data.name}} {{data.media_type}} 
-            </div>
-        </ng-container>
-    <ng-template #elseBlock>
-        <div class="error">
-            <p>no results, please check your input...</p>
-        </div>
-    </ng-template> -->
         <div class="search-container">
-            <input type="text" placeholder="e.g: Chaisaw Man, Game of Thrones, Star Wars...." name="search" list="suggestions" id="searchQuery" 
-            (change)="searchCall(searchQuery.value)" #searchQuery>
-            <ng-container  *ngIf="response.total_results!=null||response.results?.length>=1;">
-                <datalist id="suggestions" >
-                    <option *ngFor="let data of response.results" [value]="data.title || data.name">
-                        <a style="cursor:pointer" (click)="toDetailsPage(data.media_type, data.id);">
-                        {{data.id}} {{data.title || data.name}} {{data.media_type}}
-                        </a>
-                    </option>
-                </datalist>
-            </ng-container>
-            <ng-template #elseBlock>
-                <div class="error">
-                    <p>no results...</p>
-                </div>
-            </ng-template>
-            <input type="button" value="search" (click)="searchCall(searchQuery.value)"  (keydown.enter)="searchCall(searchQuery.value)">
+            <input type="text" placeholder="e.g: Chaisaw Man, Game of Thrones, Star Wars...." name="search" list="suggestions" id="searchQuery" #searchQuery>
+            <input type="button" value="search" (click)="toSearchPage(searchQuery.value)"  (keydown.enter)="toSearchPage(searchQuery.value)">
         </div>
-
         <div id="Releasing">
             <div id="data" *ngIf="SeriesData!=null">
                 <ng-container>

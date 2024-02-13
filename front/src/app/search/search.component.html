@@ -1,0 +1,13 @@
+<ng-container  *ngIf="response.total_results!=null||response.results?.length>=1; else elseBlock">
+        <div class="response" 
+        *ngFor="let data of response.results">
+            <a style="cursor:pointer" (click)="toDetailsPage(data.media_type, data.id);">
+                {{data.id}} {{data.title || data.name}} {{data.media_type}} 
+            </a> 
+        </div>
+    </ng-container>
+    <ng-template #elseBlock>
+        <div class="error">
+            <p>no results, please check your input...</p>
+        </div>
+    </ng-template>

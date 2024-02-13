@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
     }
     IDS: number[] = [];
     lsObjects: [];
-    mediaType: string[] = [];
+    mediaTypes: string[] = [];
     SeriesData: any[] = [];
     // done: boolean = false;
     // /!\ we need to declare the list variables (= []) so that we can push data into them
@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
 
         
         // give to seriesData the content of the API call, fetched in a loop using the list of IDS
+        console.log(this.mediaTypes)
     }
 
     ngOnInit(){
@@ -66,13 +67,14 @@ export class HomeComponent implements OnInit {
         for (let index = 0; index < this.lsObjects.length; index++) {
             let element = this.lsObjects[index];
             this.IDS.push(element["ID"]);
-            this.mediaType.push(element["Media_Type"]);
+            this.mediaTypes.push(element["Media_Type"]);
 
         }
 
         for (let index = 0; index < this.IDS.length; index++) {
-            let element = this.IDS[index];
-            this.getDataByID(element)
+            let ID = this.IDS[index];
+            let media_type=this.mediaTypes[index]
+            this.getDataByID(ID, media_type)
         }
         //console.log(this.SeriesData)
     }
@@ -92,7 +94,9 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['/details',cat,id]);
     }
 
-    
+    toSearchPage(query : string){
+        this.router.navigate(['/search',query]);
+    }
 
     searchCall(req: string){
 
@@ -113,28 +117,39 @@ export class HomeComponent implements OnInit {
         
     }
     
-    getDataByID(req: number){
-
-        this.API.getDetailsTv(req)
-        .pipe(
-            map((data:any) => {
-                //console.log(data.results)
-                
-                // we fetch the results part of the json and assign it to SeriesData array
-                
-                this.SeriesData.push(data)
-                //console.log(this.SeriesData)
-            })
-        )
-        .subscribe(
-            (val: any) => {},
-            (err: any) => console.error(err),
-        )
-    }
-
-    async fetchData(){
-        
-        
-        
+    getDataByID(req: number, media_type: string){
+        if (media_type==="tv"){
+            this.API.getDetailsTv(req)
+            .pipe(
+                map((data:any) => {
+                    //console.log(data.results)
+                    
+                    // we fetch the results part of the json and assign it to SeriesData array
+                    
+                    this.SeriesData.push(data)
+                    //console.log(this.SeriesData)
+                })
+            )
+            .subscribe(
+                (val: any) => {},
+                (err: any) => console.error(err),
+            )
+        } else {
+        this.API.getDetailsMovies(req)
+            .pipe(
+                map((data:any) => {
+                    //console.log(data.results)
+                    
+                    // we fetch the results part of the json and assign it to SeriesData array
+                    
+                    this.SeriesData.push(data)
+                    //console.log(this.SeriesData)
+                })
+            )
+            .subscribe(
+                (val: any) => {},
+                (err: any) => console.error(err),
+            )
+        }
     }
 }

@@ -7,7 +7,8 @@
         <p>{{genre.name}}</p>
     </div>
 
-    <input type="button" value="Add" (click)="saveIntoLS()">
+    <input *ngIf="!this.existsLS" type="button" value="Add" (click)="saveIntoLS()">
+    <input type="button" value="Already" (click)="AlreadyInLS()">
             
 
 </div>
