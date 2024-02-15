@@ -4,6 +4,7 @@ import localStr from '../service/localStr';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpParams, HttpParamsOptions } from '@angular/common/http';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class HomeComponent implements OnInit {
     // ids: number[] = []; 
     // mediaTypes: string[] = [];
 
-    constructor(private API: API,  private router : Router) {
+    constructor(private API: API,  private router : Router, ) {
         //this.searchCall("The apothecary")
         // localStr.clearData()
         // localStr.saveDataObject("myObj",this.listOfInts)
@@ -94,8 +95,13 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['/details',cat,id]);
     }
 
-    toSearchPage(query : string){
-        this.router.navigate(['/search',query]);
+    toSearchPage(searchQuery : string){
+        this.router.navigate(['/search'],
+            {
+                queryParams: {"q" : searchQuery.replace(" ", "-")}, 
+                queryParamsHandling: 'merge'
+            }
+        );
     }
 
     searchCall(req: string){

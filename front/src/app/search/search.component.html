@@ -1,4 +1,4 @@
-<ng-container  *ngIf="response.total_results!=null||response.results?.length>=1; else elseBlock">
+<ng-container  *ngIf="response.total_results!=0; else elseBlock">
         <div class="response" 
         *ngFor="let data of response.results">
             <a style="cursor:pointer" (click)="toDetailsPage(data.media_type, data.id);">

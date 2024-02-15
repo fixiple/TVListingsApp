@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import API from '../service/API.service';
 import { map } from 'rxjs';
 
@@ -20,12 +20,12 @@ export class SearchComponent implements OnInit{
 
 
     ngOnInit(): void {
-        this.route.params.subscribe((params: any) => {
-            this.query+=params['query']
-            console.log(this.query)
+        //this will check in the sended request for any params in the "q", in queryParams parameter from the parent function (Home) (??) 
+        this.route.queryParams
+        .subscribe((params: Params) => {
+            this.query=params['q']
+            this.query.replace("-", " ").trim()
             this.searchCall(this.query)
-            // so you can perform your functionality here
-            //this.toDetailsPage(media_type, id)
         });
     }
 

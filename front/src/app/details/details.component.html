@@ -6,9 +6,8 @@
     <div *ngFor="let genre of response.genres">
         <p>{{genre.name}}</p>
     </div>
-
-    <input *ngIf="!this.existsLS" type="button" value="Add" (click)="saveIntoLS()">
-    <input type="button" value="Already" (click)="AlreadyInLS()">
-            
+    
+    <input *ngIf="!this.existsLS" type="button" value="Add to LocalStorage" (click)="saveIntoLS()">
+    <h5 *ngIf="this.existsLS">This is already being watched</h5>
 
 </div>

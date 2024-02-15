@@ -98,7 +98,6 @@ export class DetailsComponent {
             {
                 this.existsLS=true;
             }
-        })  
-        console.log(this.existsLS)
+        })
     }
 }

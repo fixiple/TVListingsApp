@@ -69,6 +69,7 @@ export default class API{
 
     /**
     * Get the list of languages (ISO 639-1 tags) used throughout TMDB.
+    * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
     **/
     public getLanguages() : any {
         this.headers.append('accept','application/json')
@@ -84,6 +85,7 @@ export default class API{
 
     /**
     * Get a list of the officially supported translations on TMDB.
+    * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
     **/ 
     public getTranslations() : any {
         this.headers.append('accept','application/json')
@@ -96,5 +98,56 @@ export default class API{
             httpOptions
         )
     }
+
+    /**
+    * Get a list of configurations of the Images from the TMDB.
+    * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
+    **/ 
+   public getConfiguration() : any {
+       this.headers.append('accept','application/json')
+        const httpOptions = {
+            headers: this.headers 
+        };
+        let url='https://api.themoviedb.org/3/configuration'+'?api_key='+API_KEY
+        return this.http.get(
+            url,
+            httpOptions
+        )
+    }
+
+     /**
+    * Get the images that belong to a Movie.
+    * @param {number} movie_ID  The ID of a articular movie (ex: 872585)
+    * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
+    **/
+    public getMovieImages(movie_ID : number): any {
+        this.headers.append('accept','application/json')
+        const httpOptions = {
+            headers: this.headers 
+        };
+        let url='https://api.themoviedb.org/3/movie/+'+movie_ID+'/images'+'?api_key='+API_KEY
+        return this.http.get(
+            url,
+            httpOptions
+        )
+    }
+    
+    /**
+    * Get the images that belong to a TV series.
+    * @param {number} series_ID  The ID of a articular movie (ex: 872585)
+    * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
+    **/ 
+    public getSeriesImages(series_ID : number): any {
+        this.headers.append('accept','application/json')
+        const httpOptions = {
+            headers: this.headers 
+        };
+        let url='https://api.themoviedb.org/3/movie/+'+series_ID+'/images'+'?api_key='+API_KEY
+        return this.http.get(
+            url,
+            httpOptions
+        )
+    }
+    
 
 }

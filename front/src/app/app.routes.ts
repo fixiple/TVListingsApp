@@ -9,5 +9,5 @@ export const routes: Routes = [
     { path: 'about', component: AboutComponent },
     //we pass the categorie of the media  and the identifier
     { path : 'details/:cat/:id', component: DetailsComponent},
-    { path : 'search/:query', component: SearchComponent}
+    { path : 'search', component: SearchComponent}
 ];
