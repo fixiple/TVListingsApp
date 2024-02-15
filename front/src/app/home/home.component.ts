@@ -5,12 +5,14 @@ import { CommonModule } from '@angular/common';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpParams, HttpParamsOptions } from '@angular/common/http';
+import { PosterIMGComponent } from '../_components/poster-img/poster-img.component';
+import { GetImagesComponent } from '../_components/get-images/get-images.component';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PosterIMGComponent, GetImagesComponent],
   providers: [API],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -57,7 +59,7 @@ export class HomeComponent implements OnInit {
 
         
         // give to seriesData the content of the API call, fetched in a loop using the list of IDS
-        console.log(this.mediaTypes)
+        //console.log(this.mediaTypes)
     }
 
     ngOnInit(){

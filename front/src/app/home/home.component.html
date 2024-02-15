@@ -7,6 +7,7 @@
         <div id="Releasing">
             <div id="data" *ngIf="SeriesData!=null">
                 <ng-container>
+                    <app-get-images></app-get-images>
                     <a style="cursor:pointer" 
                     *ngFor="let data of SeriesData; index as i"
                     (click)="toDetailsPage(getMediaType(i), data.id);">

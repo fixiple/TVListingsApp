@@ -125,7 +125,7 @@ export default class API{
         const httpOptions = {
             headers: this.headers 
         };
-        let url='https://api.themoviedb.org/3/movie/+'+movie_ID+'/images'+'?api_key='+API_KEY
+        let url='https://api.themoviedb.org/3/movie/'+movie_ID+'/images'+'?api_key='+API_KEY
         return this.http.get(
             url,
             httpOptions
@@ -142,7 +142,7 @@ export default class API{
         const httpOptions = {
             headers: this.headers 
         };
-        let url='https://api.themoviedb.org/3/movie/+'+series_ID+'/images'+'?api_key='+API_KEY
+        let url='https://api.themoviedb.org/3/tv/'+series_ID+'/images'+'?api_key='+API_KEY
         return this.http.get(
             url,
             httpOptions
