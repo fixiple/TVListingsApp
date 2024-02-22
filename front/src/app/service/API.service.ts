@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 
 const API_KEY = environment.API_KEY;
@@ -120,7 +121,7 @@ export default class API{
     * @param {number} movie_ID  The ID of a articular movie (ex: 872585)
     * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
     **/
-    public getMovieImages(movie_ID : number): any {
+    public getMovieImages(movie_ID : number): Observable<any> {
         this.headers.append('accept','application/json')
         const httpOptions = {
             headers: this.headers 
@@ -137,7 +138,7 @@ export default class API{
     * @param {number} series_ID  The ID of a articular movie (ex: 872585)
     * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
     **/ 
-    public getSeriesImages(series_ID : number): any {
+    public getSeriesImages(series_ID : number): Observable<any> {
         this.headers.append('accept','application/json')
         const httpOptions = {
             headers: this.headers 

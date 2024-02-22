@@ -6,13 +6,13 @@ import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpParams, HttpParamsOptions } from '@angular/common/http';
 import { PosterIMGComponent } from '../_components/poster-img/poster-img.component';
-import { GetImagesComponent } from '../_components/get-images/get-images.component';
+import { CarouselIMGSComponent } from '../_components/carousel-imgs/carousel-imgs.component';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, PosterIMGComponent, GetImagesComponent],
+  imports: [CommonModule, PosterIMGComponent, CarouselIMGSComponent],
   providers: [API],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -90,6 +90,15 @@ export class HomeComponent implements OnInit {
     getMediaType(id: number): any{
         return this.lsObjects[id]["Media_Type"]
     }
+
+    /**
+     * 
+     * @param id  
+     * @returns 
+     */
+    getID(id: number): any{
+            return this.lsObjects[id]["ID"]
+        }
 
 
     toDetailsPage(cat: string, id: number){
