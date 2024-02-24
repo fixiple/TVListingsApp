@@ -1,6 +1,17 @@
+<a style="cursor:pointer; text-decoration: underline;" 
+    (click)="toHomePage()">
+    <p>return to Home Page</p>
+</a>
 <ng-container  *ngIf="response.total_results!=0; else elseBlock">
         <div class="response" 
         *ngFor="let data of response.results">
+            <img
+            class="fit-picture"
+            src="{{data.poster_path ? baseImageURL+data.poster_path : 'assets/img/fallbackIMG.svg'}}"
+            alt="noice" 
+            loading="lazy"
+            width="100px"
+            />
             <a style="cursor:pointer" (click)="toDetailsPage(data.media_type, data.id);">
                 {{data.id}} {{data.title || data.name}} {{data.media_type}} 
             </a> 
@@ -10,4 +21,4 @@
         <div class="error">
             <p>no results, please check your input...</p>
         </div>
-    </ng-template>
+</ng-template>

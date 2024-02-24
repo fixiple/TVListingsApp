@@ -15,6 +15,8 @@ import { map } from 'rxjs';
 export class SearchComponent implements OnInit{
     response : any = {};
     query: string = "";
+    baseImageURL: string="https://image.tmdb.org/t/p/original";
+    fallBackImage: string="assets/img/fallBackImage.svg"
 
     constructor(private API: API,  private router : Router, private route : ActivatedRoute){}
 
@@ -27,11 +29,16 @@ export class SearchComponent implements OnInit{
             this.query.replace("-", " ").trim()
             this.searchCall(this.query)
         });
+
     }
 
     toDetailsPage(cat: string, id: number) : void{
         // console.log(id)
         this.router.navigate(['/details',cat,id]);
+    }
+
+    toHomePage() : void{
+        this.router.navigate(['/']);
     }
 
     searchCall(req: string){

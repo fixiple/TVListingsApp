@@ -2,6 +2,26 @@
     text-align: center;
 }
 
+#data{
+    display: flex;
+    justify-content: space-evenly;
+}
+
 #data-list{
-    
+    width: 200px;
+
+}
+
+.poster-img{
+    align-self: center;
+}
+
+#content{
+    display: flex;
+    flex-direction: column;
+}
+
+#content a{
+    display: flex;
+    align-self: center;
 }

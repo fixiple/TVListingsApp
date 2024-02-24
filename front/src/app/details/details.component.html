@@ -1,13 +1,37 @@
+<a style="cursor:pointer; text-decoration: underline;" 
+    (click)="backClicked()">
+    <p>return Back</p>
+</a>
+
 <div class="response">
     <h1>{{response.name || response.original_title}}</h1>
+    <app-poster-img [SourcePosterID]="id" [SourceMediaType]="media_type"></app-poster-img>
     <h5>{{response.first_air_date || response.release_date}}</h5>
     <p>{{response.overview}}</p>
-    <p>{{response.runtime}}</p>
+    <p>{{response.runtime==0 ? 'no runtime data!' : response.runtime}}</p>
     <div *ngFor="let genre of response.genres">
         <p>{{genre.name}}</p>
     </div>
+    <div id="nextEpisodeInfo">
+        <h3>Next Episode Information</h3>
+        <img
+            id="nextEpisodePoster"
+            src="https://image.tmdb.org/t/p/original{{response.next_episode_to_air.still_path}}"
+            alt="noice" 
+            loading="lazy"
+            width="200px"
+        />
+        <div id="nextEpisode">
+            <div id="nextEpisodeText">
+                <p>Episode title: {{response.next_episode_to_air.name}}</p>
+                <p>Episode number: {{response.next_episode_to_air.episode_number}}</p>
+                <p>Release date: {{response.next_episode_to_air.air_date}}</p>
+            </div>
+        </div>
+    </div>
     
-    <input *ngIf="!this.existsLS" type="button" value="Add to LocalStorage" (click)="saveIntoLS()">
-    <h5 *ngIf="this.existsLS">This is already being watched</h5>
-
+    <div id="addToLSDiv">
+        <input *ngIf="!this.existsLS" type="button" value="Add to LocalStorage" (click)="saveIntoLS()">
+        <h5 *ngIf="this.existsLS">This is already being watched</h5>
+    </div>
 </div>

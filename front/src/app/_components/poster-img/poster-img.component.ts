@@ -12,8 +12,9 @@ import { map } from 'rxjs';
 })
 export class PosterIMGComponent {
     response: any = {}
-    mainImage=""
-
+    baseImageURL: string="https://image.tmdb.org/t/p/original";
+    fallBackImage: string="assets/img/fallBackImage.svg";
+    mainImage=''
     //SEE : https://angular.io/guide/property-binding-best-practices
     @Input() SourcePosterID=0
     @Input() SourceMediaType=""
@@ -33,7 +34,7 @@ export class PosterIMGComponent {
                 .pipe(
                     map((data:any) => {
                         console.log(data)
-                        this.mainImage=data["posters"][0]["file_path"]
+                        this.mainImage=data["posters"][0]["file_path"] || ""
                     })
                 )
                 .subscribe((data)=>{
@@ -43,7 +44,7 @@ export class PosterIMGComponent {
             this.API.getMovieImages(ID)
             .pipe(
                 map((data:any) => {
-                    this.mainImage=data["posters"][0]["file_path"]
+                    this.mainImage=data["posters"][0]["file_path"] || ""
                     console.log(data)
                 })
             )

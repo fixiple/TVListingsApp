@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import API from '../service/API.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location} from '@angular/common';
 import { map } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import localStr from '../service/localStr';
+import { PosterIMGComponent } from '../_components/poster-img/poster-img.component';
 
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PosterIMGComponent],
   providers: [API, localStr],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
@@ -27,7 +28,7 @@ export class DetailsComponent {
     **/
     response: any = {};
 
-    constructor(private API : API, private route : ActivatedRoute, private localStr : localStr){}
+    constructor(private API : API, private route : ActivatedRoute, private localStr : localStr, private _location: Location){}
     ngOnInit(){
         this.details = this.route.params.subscribe((params: any) => {
             
@@ -75,6 +76,14 @@ export class DetailsComponent {
             )
         }
     }
+
+    /**
+     * This Method allows the user to go back a page
+     * (it's like using the previous page button on any browser ^^)
+     */
+    backClicked() {
+        this._location.back();
+      }
 
     /**
      * This method saves the current data's ID and MediaType in localStorage (Object Format)
