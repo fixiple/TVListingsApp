@@ -12,7 +12,7 @@
     <div *ngFor="let genre of response.genres">
         <p>{{genre.name}}</p>
     </div>
-    <div id="nextEpisodeInfo">
+    <div id="nextEpisodeInfo" *ngIf="response.next_episode_to_air!=null">
         <h3>Next Episode Information</h3>
         <img
             id="nextEpisodePoster"
@@ -30,8 +30,10 @@
         </div>
     </div>
     
-    <div id="addToLSDiv">
-        <input *ngIf="!this.existsLS" type="button" value="Add to LocalStorage" (click)="saveIntoLS()">
-        <h5 *ngIf="this.existsLS">This is already being watched</h5>
+    <div class="actionWithData" *ngIf="!this.existsLS">
+        <input type="button" value="Add to Watchlist" (click)="AddIntoLS()">
+    </div>
+    <div class="actionWithData" *ngIf="this.existsLS">
+        <input type="button" value="Delete From Watchlist" (click)="DeleteFromLS()">
     </div>
 </div>

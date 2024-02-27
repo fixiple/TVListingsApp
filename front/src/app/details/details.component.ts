@@ -54,7 +54,7 @@ export class DetailsComponent {
             this.API.getDetailsTv(req)
             .pipe(
                 map((data:any) => {
-                    console.log(data)
+                    //console.log(data)
                     this.response=data
                 })
             )
@@ -83,18 +83,20 @@ export class DetailsComponent {
      */
     backClicked() {
         this._location.back();
-      }
+    }
 
     /**
      * This method saves the current data's ID and MediaType in localStorage (Object Format)
      */
-    saveIntoLS(){
-            let Saved_Objects = this.localStr.getDataObject("Saved_Objects") || []
-            var newObject = {"ID": this.id,
-                        "Media_Type": this.media_type, 
-                        "Watched": false}
-            Saved_Objects.push(newObject)
-            this.localStr.saveDataObject("Saved_Objects", Saved_Objects)
+    AddIntoLS(){
+        let Saved_Objects = this.localStr.getDataObject("Saved_Objects") || []
+        var newObject = {"ID": this.id,
+                    "Media_Type": this.media_type, 
+                    "Watched": false}
+        Saved_Objects.push(newObject)
+        this.localStr.saveDataObject("Saved_Objects", Saved_Objects)
+            
+        window.location.reload();
     }
 
     /**
@@ -102,11 +104,28 @@ export class DetailsComponent {
      */
     AlreadyInLS(){
         let Objects = this.localStr.getDataObject("Saved_Objects")
-        let dat = Objects.find((data: { ID: number; }) => {
+        Objects.find((data: { ID: number; }) => {
             if (data.ID === this.id)
             {
                 this.existsLS=true;
             }
         })
+    }
+
+    /**
+     * This method deletes the current data's ID and MediaType in localStorage (Object Format)
+     */
+    //See: https://sentry.io/answers/remove-specific-item-from-array/#combining-indexof-and-splice-methods
+    DeleteFromLS(){
+        let Objects: any=this.localStr.getDataObject("Saved_Objects")
+
+        for (var i=0; i< Objects.length; i++) {
+            if (Objects[i].ID == this.id) {
+                Objects.splice(i, 1);
+                //console.log("item deleted")
+                this.localStr.saveDataObject("Saved_Objects", Objects)
+            }
+        }
+        window.location.reload();
     }
 }
