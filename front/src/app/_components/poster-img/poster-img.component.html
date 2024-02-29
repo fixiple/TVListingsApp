@@ -1,7 +1,11 @@
-<img
-class="poster-img"
-src="{{mainImage!='' ? baseImageURL+mainImage : 'assets/img/fallbackIMG.svg'}}"
-alt="noice" 
-loading="lazy"
-width="200px"
-/>
+
+<a style="cursor:pointer" 
+(click)="toDetailsPage(SourceMediaType, SourcePosterID);">
+    <img
+    class="poster-img"
+    src="{{mainImage!='' ? baseImageURL+mainImage : 'assets/img/fallbackIMG.svg'}}"
+    alt="noice" 
+    loading="lazy"
+    width="200px"
+    />
+</a>

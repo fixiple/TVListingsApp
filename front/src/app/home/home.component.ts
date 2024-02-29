@@ -1,10 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import API from '../service/API.service';
-import localStr from '../service/localStr';
+import API from '../_service/API.service';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
-import { HttpParams, HttpParamsOptions } from '@angular/common/http';
 import { PosterIMGComponent } from '../_components/poster-img/poster-img.component';
 import { CarouselIMGSComponent } from '../_components/carousel-imgs/carousel-imgs.component';
 
@@ -26,15 +24,14 @@ export class HomeComponent implements OnInit {
      * ex: getting the name of a TV Show or anime: {{response.name}}
     **/
     response: any = {};
-    listOfInts: Object = {
-        id:100,
-        id2:200,
-        id3:300,
-    }
     IDS: number[] = [];
     lsObjects: [];
     mediaTypes: string[] = [];
     SeriesData: any[] = [];
+    toBeAired: boolean[] = [];
+    isMovie : boolean[]=[]
+    endedOrCancelled : boolean[]=[]
+
     // done: boolean = false;
     // /!\ we need to declare the list variables (= []) so that we can push data into them
     // titles: string[] = [];
@@ -80,6 +77,11 @@ export class HomeComponent implements OnInit {
             this.getDataByID(ID, media_type)
         }
         //console.log(this.SeriesData)
+
+        for (let index = 0; index < this.mediaTypes.length; index++) {
+            let element = this.mediaTypes[index];
+            this.isMovie.push(element==="movie" ? true : false);
+        }
     }
 
     /**
@@ -90,6 +92,7 @@ export class HomeComponent implements OnInit {
     getMediaType(id: number): any{
         return this.lsObjects[id]["Media_Type"]
     }
+
 
     /**
      * 
@@ -115,6 +118,10 @@ export class HomeComponent implements OnInit {
         );
     }
 
+    toCurrentlyWatchedPage(){
+        this.router.navigate(['/watchList']);
+    }
+
     searchCall(req: string){
 
         this.API.searchQuery(req)
@@ -125,6 +132,7 @@ export class HomeComponent implements OnInit {
                 // we fetch the results part of the json and assign it to response variable
                 
                 this.response=data
+               
             })
         )
         .subscribe(
@@ -145,6 +153,12 @@ export class HomeComponent implements OnInit {
                     
                     this.SeriesData.push(data)
                     //console.log(this.SeriesData)
+
+                    
+                    this.toBeAired.push(data.next_episode_to_air!==null&&data.status==='Returning Series' ? true : false)
+                    
+                    this.endedOrCancelled.push(data.next_episode_to_air!==null&&data.status==='Returning Series' ? true : false)
+                    //console.log("Series: "+this.toBeAired)
                 })
             )
             .subscribe(
@@ -161,6 +175,8 @@ export class HomeComponent implements OnInit {
                     
                     this.SeriesData.push(data)
                     //console.log(this.SeriesData)
+                    this.toBeAired.push(data.status==='In Production' ? true : false)
+                    //console.log("Movie:" +this.toBeAired)
                 })
             )
             .subscribe(

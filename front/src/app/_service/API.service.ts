@@ -119,14 +119,18 @@ export default class API{
      /**
     * Get the images that belong to a Movie.
     * @param {number} movie_ID  The ID of a articular movie (ex: 872585)
+    * @param {String} language  The language we wanna get the data back as (ex: "en-US" for United States English)
+    * @param {String} fallBackLanguage  fallbacklanguage in case language doesn't find the language we wanna get the data back as
+    * @param {String} fallBackLanguage2  fallbacklanguage in case language doesn't find the language we wanna get the data back as
     * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
+    * SEE : https://developer.themoviedb.org/docs/image-languages
     **/
-    public getMovieImages(movie_ID : number): Observable<any> {
+    public getMovieImages(movie_ID : number, language : String = "en-US", fallBackLanguage: String = "en" , fallBackLanguage2: String = "ja"): Observable<any> {
         this.headers.append('accept','application/json')
         const httpOptions = {
             headers: this.headers 
         };
-        let url='https://api.themoviedb.org/3/movie/'+movie_ID+'/images'+'?api_key='+API_KEY
+        let url='https://api.themoviedb.org/3/movie/'+movie_ID+'/images'+'?language='+language+'&include_image_language='+fallBackLanguage+','+fallBackLanguage2+'&api_key='+API_KEY
         return this.http.get(
             url,
             httpOptions
@@ -136,14 +140,18 @@ export default class API{
     /**
     * Get the images that belong to a TV series.
     * @param {number} series_ID  The ID of a articular movie (ex: 872585)
+    * @param {String} language  The language we wanna get the data back as (ex: "en-US" for United States English)
+    * @param {String} fallBackLanguage  fallbacklanguage in case language doesn't find the language we wanna get the data back as
+    * @param {String} fallBackLanguage2  fallbacklanguage in case language doesn't find the language we wanna get the data back as
     * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
+    * SEE : https://developer.themoviedb.org/docs/image-languages
     **/ 
-    public getSeriesImages(series_ID : number): Observable<any> {
+    public getSeriesImages(series_ID : number, language : String = "en-US", fallBackLanguage: String = "en", fallBackLanguage2: String = "jp" ): Observable<any> {
         this.headers.append('accept','application/json')
         const httpOptions = {
             headers: this.headers 
         };
-        let url='https://api.themoviedb.org/3/tv/'+series_ID+'/images'+'?api_key='+API_KEY
+        let url='https://api.themoviedb.org/3/tv/'+series_ID+'/images'+'?language='+language+'&include_image_language='+fallBackLanguage+','+fallBackLanguage2+'&api_key='+API_KEY
         return this.http.get(
             url,
             httpOptions

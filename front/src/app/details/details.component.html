@@ -4,9 +4,16 @@
 </a>
 
 <div class="response">
-    <h1>{{response.name || response.original_title}}</h1>
+    <div class="tooltip">
+        <h1>
+            {{response.name || response.title}}
+        </h1>
+        <span class="tooltiptext">Original Title:<br/>{{response.original_name || response.original_title}}</span>
+    </div>
+    <br/>
     <app-poster-img [SourcePosterID]="id" [SourceMediaType]="media_type"></app-poster-img>
     <h5>{{response.first_air_date || response.release_date}}</h5>
+    <h5>{{response.status}}</h5>
     <p>{{response.overview}}</p>
     <p>{{response.runtime==0 ? 'no runtime data!' : response.runtime}}</p>
     <div *ngFor="let genre of response.genres">
@@ -16,7 +23,7 @@
         <h3>Next Episode Information</h3>
         <img
             id="nextEpisodePoster"
-            src="https://image.tmdb.org/t/p/original{{response.next_episode_to_air.still_path}}"
+            [src]=nextEpisodeImage
             alt="noice" 
             loading="lazy"
             width="200px"

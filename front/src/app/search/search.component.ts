@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import API from '../service/API.service';
+import API from '../_service/API.service';
 import { map } from 'rxjs';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import API from '../../service/API.service';
+import API from '../../_service/API.service';
 import { map } from 'rxjs';
 
 @Component({

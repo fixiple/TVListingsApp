@@ -2,6 +2,10 @@
     text-align: center;
 }
 
+#watching{
+    text-align: center;
+}
+
 #data{
     display: flex;
     justify-content: space-evenly;
@@ -24,4 +28,19 @@
 #content a{
     display: flex;
     align-self: center;
+}
+
+#episode_name{
+    padding-bottom: 15px;
+    font-weight: bold;
+}
+
+#WatchedPageButton{
+
+}
+
+#pageListParagraph{
+    padding-top: 60px;
+    text-align: center; 
+    font-size: xx-large;
 }

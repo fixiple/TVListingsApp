@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import API from '../service/API.service';
+import API from '../_service/API.service';
 import { CommonModule, Location} from '@angular/common';
 import { map } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import localStr from '../service/localStr';
+import localStr from '../_service/localStr';
 import { PosterIMGComponent } from '../_components/poster-img/poster-img.component';
 
 
@@ -21,6 +21,8 @@ export class DetailsComponent {
     id : number = 0;
     media_type : string = "";
     existsLS: boolean = false;
+    nextEpisodeImage="";
+
     /**
      * The response variable after making the API request.
      * It contains the data of the API request, allowing interactivity with the API in the front-end.
@@ -56,6 +58,7 @@ export class DetailsComponent {
                 map((data:any) => {
                     //console.log(data)
                     this.response=data
+                    this.nextEpisodeImage=data.next_episode_to_air.still_path!=null ? "https://image.tmdb.org/t/p/original"+data.next_episode_to_air.still_path : "assets/img/fallbackIMG.svg"  
                 })
             )
             .subscribe(
@@ -68,6 +71,7 @@ export class DetailsComponent {
                 map((data:any) => {
                     console.log(data)
                     this.response=data
+                    
                 })
             )
             .subscribe(

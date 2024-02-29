@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import API from '../../service/API.service';
+import API from '../../_service/API.service';
 import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-poster-img',
@@ -18,7 +19,7 @@ export class PosterIMGComponent {
     //SEE : https://angular.io/guide/property-binding-best-practices
     @Input() SourcePosterID=0
     @Input() SourceMediaType=""
-    constructor(private API : API){}
+    constructor(private API : API, private router : Router){}
 
 
 
@@ -27,13 +28,18 @@ export class PosterIMGComponent {
     }
 
 
+    toDetailsPage(cat: string, id: number){
+        // console.log(id)
+        this.router.navigate(['/details',cat,id]);
+    }
+
     getImage(ID: number, media_type: string) : any{
         let datas;
         if(media_type=="tv"){
             this.API.getSeriesImages(ID)
                 .pipe(
                     map((data:any) => {
-                        console.log(data)
+                        //console.log(data)
                         this.mainImage=data["posters"][0]["file_path"] || ""
                     })
                 )
@@ -44,8 +50,8 @@ export class PosterIMGComponent {
             this.API.getMovieImages(ID)
             .pipe(
                 map((data:any) => {
+                    //console.log(data)
                     this.mainImage=data["posters"][0]["file_path"] || ""
-                    console.log(data)
                 })
             )
             .subscribe((data)=>{
