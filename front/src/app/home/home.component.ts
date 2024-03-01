@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, Renderer2, ElementRef } from '@angular/core';
 import API from '../_service/API.service';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs';
@@ -16,7 +16,15 @@ import { CarouselIMGSComponent } from '../_components/carousel-imgs/carousel-img
   styleUrl: './home.component.css'
 })
 
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
+    
+    @ViewChild('spanTitle') MovieTitleElement: any;
+    @ViewChild('titleContainer') TitleContainerElement: any;
+    @ViewChild('dataList') dataListElement: any;
+    movieTitleWidth : number = 0;    
+    datalistWidth : number = 0;    
+    isTooBig = false;
+
     
     /**
      * The response variable after making the API request.
@@ -38,7 +46,7 @@ export class HomeComponent implements OnInit {
     // ids: number[] = []; 
     // mediaTypes: string[] = [];
 
-    constructor(private API: API,  private router : Router, ) {
+    constructor(private API: API,  private router : Router, private renderer : Renderer2) {
         //this.searchCall("The apothecary")
         // localStr.clearData()
         // localStr.saveDataObject("myObj",this.listOfInts)
@@ -82,7 +90,20 @@ export class HomeComponent implements OnInit {
             let element = this.mediaTypes[index];
             this.isMovie.push(element==="movie" ? true : false);
         }
+        
+ 
+
+
     }
+
+
+
+    ngAfterViewInit() {
+        this.datalistWidth = (this.dataListElement.nativeElement as HTMLElement).offsetWidth;
+        this.movieTitleWidth = (this.MovieTitleElement.nativeElement as HTMLElement).offsetWidth;
+        this.isTooBig = this.movieTitleWidth>this.datalistWidth ? true : false;
+    }
+
 
     /**
      * 
@@ -92,7 +113,6 @@ export class HomeComponent implements OnInit {
     getMediaType(id: number): any{
         return this.lsObjects[id]["Media_Type"]
     }
-
 
     /**
      * 

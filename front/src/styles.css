@@ -1,15 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
-body{
-    background-color: rgb(5, 80, 55);
-}
 
-.section-2{
-    background-color: rgb(22, 133, 96);
+:root {
+    --main-bg-color: rgb(5, 80, 55);
+    --section-1-bg-color: rgb(84, 184, 150);
+    --section-1-fader-bg-color: rgb(156, 248, 217);
+    --section-2-bg-color: rgb(22, 133, 96);
+    --tooltip-text-bg-color: #000;
+    --tooltip-text-color: #fff;
+  }
+  
+
+
+body{
+    background-color: var(--main-bg-color)
 }
 
 .section{
-    background-color: rgb(84, 184, 150);
+    background-color: var(--section-1-bg-color)
 }
+
+.section-2{
+    background-color: var(--section-2-bg-color)
+}
+
 
 
 /*Link : https://www.w3schools.com/css/css_tooltip.asp */
@@ -24,8 +37,8 @@ body{
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
-    background-color: black;
-    color: #fff;
+    background-color: var(--tooltip-text-bg-color);
+    color: var(--tooltip-text-color);
     text-align: center;
     padding: 2px 0;
     border-radius: 6px;
@@ -40,4 +53,54 @@ body{
   /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
     visibility: visible;
+}
+
+.container {
+    overflow: hidden;
+}
+
+.title-container{
+    width: inherit;
+    overflow-x: visible;
+    white-space: nowrap;
+    position: relative;
+    max-width: 200px;
+}
+
+.title-container span {
+    display: inline-block;
+}
+
+.title-container .animate-leftRight {
+    position: relative;
+    animation: leftright 1s infinite alternate ease-in-out;
+}
+
+@keyframes leftright {
+    0%, 20% {
+      transform: translateX(0%);
+      left: 0%;
+    }
+    80%, 100% {
+      transform: translateX(-100%);
+      left: 100%;
+    }
+}
+
+
+.fader {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 25px;
+}
+
+.fader.fader-left {
+    left: 0;
+    background: linear-gradient(to left, transparent, var(--section-1-fader-bg-color));
+}
+
+.fader.fader-right {
+    right: 0;
+    background: linear-gradient(to right, transparent, var(--section-1-fader-bg-color));
 }
