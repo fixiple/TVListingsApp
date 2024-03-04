@@ -15,7 +15,10 @@ export class PosterIMGComponent {
     response: any = {}
     baseImageURL: string="https://image.tmdb.org/t/p/original";
     fallBackImage: string="assets/img/fallBackImage.svg";
-    mainImage=''
+    @Input() mainImage=''
+    @Input() posterWidth=200
+
+
     //SEE : https://angular.io/guide/property-binding-best-practices
     @Input() SourcePosterID=0
     @Input() SourceMediaType=""

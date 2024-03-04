@@ -1,5 +1,6 @@
 <main class="main">
     <div class="content">
+        
         <div class="search-container">
             <input type="text" placeholder="e.g: Chaisaw Man, Game of Thrones, Star Wars...." name="search" list="suggestions" id="searchQuery" #searchQuery>
             <input type="button" value="search" (click)="toSearchPage(searchQuery.value)"  (keydown.enter)="toSearchPage(searchQuery.value)">
@@ -19,8 +20,8 @@
                                 <div class="container">
                                     <div class="title-container" #titleContainer>
                                         <span [ngClass]="isTooBig ? 'animate-leftRight' : '' " #spanTitle>{{data.title || data.name}}</span>
-                                        <div class="fader fader-left"></div>
-                                        <div class="fader fader-right"></div>
+                                        <span [ngClass]="isTooBig ? 'fader fader-left' : ''"></span>
+                                        <span [ngClass]="isTooBig ? 'fader fader-right' : ''"></span>
                                     </div>
                                 </div>
                                 </a>

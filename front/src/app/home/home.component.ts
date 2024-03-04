@@ -18,9 +18,6 @@ import { CarouselIMGSComponent } from '../_components/carousel-imgs/carousel-img
 
 export class HomeComponent implements OnInit, AfterViewInit {
     
-    @ViewChild('spanTitle') MovieTitleElement: any;
-    @ViewChild('titleContainer') TitleContainerElement: any;
-    @ViewChild('dataList') dataListElement: any;
     movieTitleWidth : number = 0;    
     datalistWidth : number = 0;    
     isTooBig = false;
@@ -76,7 +73,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             let element = this.lsObjects[index];
             this.IDS.push(element["ID"]);
             this.mediaTypes.push(element["Media_Type"]);
-
+            
         }
 
         for (let index = 0; index < this.IDS.length; index++) {
@@ -91,19 +88,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.isMovie.push(element==="movie" ? true : false);
         }
         
- 
-
-
+        
+        
     }
-
-
-
+    
+    @ViewChild('spanTitle', {static: true}) 
+    movieTitleElement!: ElementRef;
+    @ViewChild('titleContainer', {static: true}) 
+    titleContainerElement!: ElementRef;
+    @ViewChild('dataList') 
+    dataListElement!: ElementRef;
+    
     ngAfterViewInit() {
+        console.log(this.dataListElement.nativeElement.clientWidth)
         this.datalistWidth = (this.dataListElement.nativeElement as HTMLElement).offsetWidth;
-        this.movieTitleWidth = (this.MovieTitleElement.nativeElement as HTMLElement).offsetWidth;
-        this.isTooBig = this.movieTitleWidth>this.datalistWidth ? true : false;
+        this.movieTitleWidth = (this.movieTitleElement.nativeElement as HTMLElement).offsetWidth;
+        console.log(this.movieTitleWidth ,"+", this.datalistWidth )
+        this.isTooBig = this.movieTitleWidth<this.datalistWidth ? true : false;
     }
-
+    
+    
 
     /**
      * 
@@ -121,7 +125,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
      */
     getID(id: number): any{
             return this.lsObjects[id]["ID"]
-        }
+    }
 
 
     toDetailsPage(cat: string, id: number){

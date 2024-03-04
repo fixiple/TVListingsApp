@@ -11,4 +11,11 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'front';
+  //READ : https://v6.material.angular.io/components/dialog/overview
+  //used to open and close Modal Dialog windows
+  openModalView(){
+
+    console.log("Dialog box opened")
+  }
+
 }
