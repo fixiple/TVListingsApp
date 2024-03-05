@@ -1,10 +1,12 @@
-<a style="cursor:pointer" 
-    (click)="openModalView()">
-    <svg width="40" height="40" viewBox="1 1 15 15" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="8" cy="8" r="5" fill="none" stroke="#000"/>
-        <path d="M6 5 11 8 6 11" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <br/>
-    <span>Settings</span>
-</a>
+<div id="modalDiv">
+    <a style="cursor:pointer" 
+        (click)="openModalView()">
+        <svg width="40" height="40" viewBox="1 1 15 15" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="8" cy="8" r="5" fill="none" stroke="#000"/>
+            <path d="M6 5 11 8 6 11" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <br/>
+        <span>Settings</span>
+    </a>
+</div>
 <router-outlet></router-outlet>

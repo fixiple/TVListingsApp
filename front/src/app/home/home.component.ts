@@ -54,8 +54,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         // console.log(myObj.id2)
         // console.log(myObj.id3)
         this.lsObjects=JSON.parse(localStorage.getItem("Saved_Objects")!)
-       
+        //this.lsObjects.sort( (a : any,b: any) => a.ID < b.ID ? -1 : 1 )
+        //console.log(this.lsObjects)
 
+        
         //DEBUG
         //console.log(this.lsIDS[0].ID)
 
@@ -65,6 +67,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(){
+        
+
         this.SeriesData = []
         
         
@@ -100,11 +104,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
     dataListElement!: ElementRef;
     
     ngAfterViewInit() {
-        console.log(this.dataListElement.nativeElement.clientWidth)
-        this.datalistWidth = (this.dataListElement.nativeElement as HTMLElement).offsetWidth;
-        this.movieTitleWidth = (this.movieTitleElement.nativeElement as HTMLElement).offsetWidth;
-        console.log(this.movieTitleWidth ,"+", this.datalistWidth )
-        this.isTooBig = this.movieTitleWidth<this.datalistWidth ? true : false;
+        //ERROR: this below isn't called !! 
+        this.SeriesData.sort((a : any,b: any) => {
+            console.log(a.next_episode_to_air.air_date)
+            if (a.next_episode_to_air.air_date > b.next_episode_to_air.air_date){ 
+                console.log("HU");
+                return 1 ;
+            }
+            else if(a.next_episode_to_air.air_date < b.next_episode_to_air.air_date) {
+                console.log("HO")
+                return -1; 
+            }
+            else{ 
+                console.log("HIA")
+                return 0
+            }
+        })
+        this.SeriesData.map((val) => {
+            console.log(val['last_episode_to_air']['air_date'])
+        })
+
+        //console.log(this.dataListElement.nativeElement.clientWidth)
+        // this.datalistWidth = (this.dataListElement.nativeElement as HTMLElement).offsetWidth;
+        // this.movieTitleWidth = (this.movieTitleElement.nativeElement as HTMLElement).offsetWidth;
+        // console.log(this.movieTitleWidth ,"+", this.datalistWidth )
+        // this.isTooBig = this.movieTitleWidth<this.datalistWidth ? true : false;
     }
     
     
