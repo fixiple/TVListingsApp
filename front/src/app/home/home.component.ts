@@ -169,6 +169,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     toCurrentlyWatchedPage(){
         this.router.navigate(['/watchList']);
     }
+    toReleasesPage(){
+        this.router.navigate(['/releases']);
+    }
 
     searchCall(req: string){
 

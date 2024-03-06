@@ -1,5 +1,5 @@
 <div class="section">
-    <h3>Currently Watching</h3>
+    <h3>Upcoming Releases</h3>
     <div id="data" *ngIf="lsObjects!=null" >
         <div id="data-list" #dataList>
             <table id="Table">
@@ -10,6 +10,12 @@
                         </th>
                         <th>
                             Title
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Release dates
                         </th>
                         <th>
                             Options
@@ -24,6 +30,14 @@
                         <td>
                             {{data?.title || data?.name}}
                         </td>
+                        <td>
+                            {{ data?.status }}
+                        </td>
+                        <td>
+                            {{ data?.release_date || data?.next_episode_to_air?.air_date || "no info for now"}} <br/>
+                            {{getMediaType(i)==="tv" ? 'Title: '+data?.next_episode_to_air?.name : ''}} <br/>
+                            {{getMediaType(i)==="tv" ? 'Episode number '+data?.next_episode_to_air?.episode_number+' of '+data?.number_of_episodes: ''}}
+                        </td>
                         <td>    
                             <input  style="cursor:pointer" type="button" value="Get Details" (click)="toDetailsPage(getMediaType(i), data.id);"/>
                             <input  style="cursor:pointer" type="button" value="Delete" (click)="DeleteFromLS(data.id);"/>
@@ -37,6 +51,12 @@
                         </th>
                         <th>
                             Title
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Release dates
                         </th>
                         <th>
                             Options

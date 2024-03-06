@@ -7,3 +7,9 @@ div#modalDiv{
         margin-right: 15px;
     }
 }
+
+.redirButton{
+    font-size: large;    
+    display: flex;
+    align-self: right;
+}
