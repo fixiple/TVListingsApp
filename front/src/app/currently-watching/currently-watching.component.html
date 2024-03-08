@@ -1,6 +1,6 @@
 <div class="section">
     <h3>Currently Watching</h3>
-    <div id="data" *ngIf="lsObjects!=null" >
+    <div id="data" *ngIf="lsObjects!=null; else addItems">
         <div id="data-list" #dataList>
             <table id="Table">
                 <thead>
@@ -16,16 +16,16 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody  *ngFor="let data of SeriesData; index as i">
+                <tbody  *ngFor="let data of lsObjects; index as i">
                     <tr>
                         <td>
-                            <app-poster-img [posterWidth]="100" [SourcePosterID]="data.id" [SourceMediaType]="getMediaType(i)"></app-poster-img>
+                            <app-poster-img [posterWidth]="100" [SourcePosterID]="data.id" [SourceMediaType]="data.media_type"></app-poster-img>
                         </td>
                         <td>
-                            {{data?.title || data?.name}}
+                            {{data?.name}}
                         </td>
                         <td>    
-                            <input  style="cursor:pointer" type="button" value="Get Details" (click)="toDetailsPage(getMediaType(i), data.id);"/>
+                            <input  style="cursor:pointer" type="button" value="Get Details" (click)="toDetailsPage(data.media_type, data.id);"/>
                             <input  style="cursor:pointer" type="button" value="Delete" (click)="DeleteFromLS(data.id);"/>
                         </td>
                     </tr>
@@ -44,6 +44,16 @@
                     </tr>
                 </tfoot>
             </table>
+                <a (click)="toHomePage()">
+                    Return to Home page 
+                </a>
         </div>
     </div>
+    <ng-template #addItems>
+        <div>
+            <h3>
+                Please add something into your "Saved" list <a (click)="toHomePage()">here</a>
+            </h3>
+        </div>
+    </ng-template>
 </div>

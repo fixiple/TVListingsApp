@@ -13,3 +13,9 @@ div#modalDiv{
     display: flex;
     align-self: right;
 }
+
+a{
+    cursor:pointer;
+    text-decoration: underline;
+    color:aquamarine;
+}

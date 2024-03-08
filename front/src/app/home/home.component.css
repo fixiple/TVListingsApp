@@ -30,14 +30,13 @@
     align-self: center;
 }
 
-#episode_name{
-    padding-bottom: 15px;
-    font-weight: bold;
+
+#WatchedPageButton{
+    text-align: center;
 }
 
-
 #pageListParagraph{
-    padding-top: 60px;
+    padding-top: 5px;
     text-align: center; 
-    font-size: xx-large;
+    font-size: medium;
 }

@@ -2,25 +2,34 @@
     <div class="content">
         
         <div class="search-container">
-            <input type="text" placeholder="e.g: Chaisaw Man, Game of Thrones, Star Wars...." name="search" list="suggestions" id="searchQuery" #searchQuery>
+            <input type="text" placeholder="e.g: Chaisaw Man, Game of Thrones, Star Wars...." name="search" list="suggestions" id="searchQuery" (keydown.enter)="toSearchPage(searchQuery.value)" #searchQuery>
             <input type="button" value="search" (click)="toSearchPage(searchQuery.value)"  (keydown.enter)="toSearchPage(searchQuery.value)">
         </div>
-        <div class="section">
+        <div class="section" *ngIf="lsObjects!=null">
             <h3>To be Aired</h3>
 
-            <div id="data" *ngIf="SeriesData!=null" >
-                <ng-container *ngFor="let data of SeriesData; index as i">
-                        <div id="data-list" *ngIf="toBeAired[i]" #dataList>
+            <div id="data"  >
+                <ng-container *ngFor="let data of lsObjects; index as i">
+                        <div id="data-list" #dataList>
                             <div id="content" *ngIf="i<=5; else nextButtonAired">
-                                <span *ngIf="!isMovie[i]" style="font-size: 14px;" >next episode release: {{data.next_episode_to_air?.air_date || "no info for now"}}</span>
-                                <span id="episode_name" *ngIf="!isMovie[i]">{{data.next_episode_to_air?.name}}</span>
-                                <p *ngIf="isMovie[i]">Release Date : {{ data.release_date || "no info for now"}}</p>
-                                <app-poster-img [SourcePosterID]="data.id" [SourceMediaType]="getMediaType(i)"></app-poster-img>
+                                <div class="HPReleaseInfo" *ngIf="data.media_type=='tv'; else isMovie">
+                                    <span>next episode: <b>{{data.next_episode_to_air.air_date}}</b> <br/></span>
+                                    <span>
+                                        {{data.next_episode_to_air.name}} ({{data.next_episode_to_air.episode_number +'/'+ data.number_of_episodes}})
+                                    </span>
+                                </div>
+                                <ng-template #isMovie>
+                                    <div class="HPReleaseInfo"> 
+                                        <span>release date: {{data.release_date || "no info for now"}}</span>
+                                        <hr />
+                                    </div>
+                                </ng-template>
+                                <app-poster-img [SourcePosterID]="data.id" [SourceMediaType]="data.media_type"></app-poster-img>
                                 <a style="cursor:pointer" 
-                                (click)="toDetailsPage(getMediaType(i), data.id);">
+                                (click)="toDetailsPage(data.media_type,data.id);">
                                 <div class="container">
                                     <div class="title-container" #titleContainer>
-                                        <span [ngClass]="isTooBig ? 'animate-leftRight' : '' " #spanTitle>{{data.title || data.name}}</span>
+                                        <span [ngClass]="isTooBig ? 'animate-leftRight' : '' " #spanTitle>{{data.name || data.name}}</span>
                                         <span [ngClass]="isTooBig ? 'fader fader-left' : ''"></span>
                                         <span [ngClass]="isTooBig ? 'fader fader-right' : ''"></span>
                                     </div>
@@ -35,7 +44,7 @@
                                             <circle cx="8" cy="8" r="5" fill="none" stroke="#000"/>
                                             <path d="M6 5 11 8 6 11" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
-                                        <p id="pageListParagraph">See all</p>
+                                        <p id="pageListParagraph">See all the following releases</p>
                                     </a>
                                 </div>
                             </ng-template>
@@ -44,31 +53,16 @@
             </div>
         </div>
 
-        <div class="section-2">
-            <h3>Current List</h3>
-            <div id="data" *ngIf="SeriesData!=null">
-                <div id="data-list" *ngFor="let data of SeriesData; index as i">
-                    <div id="content" *ngIf="i<=5; else nextButtonWatchlist">
-                        <app-poster-img [SourcePosterID]="data.id" [SourceMediaType]="getMediaType(i)"></app-poster-img>
-                        <a style="cursor:pointer" 
-                        (click)="toDetailsPage(getMediaType(i), data.id);">
-                        <span class="overlow-wrap">{{data.title || data.name}}</span>
-                        </a>
-                    </div>
-                    <ng-template #nextButtonWatchlist>
-                    <div id="WatchedPageButton">
-                        <a style="cursor:pointer" 
-                        (click)="toCurrentlyWatchedPage();">
-                            <svg viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="8" cy="8" r="5" fill="none" stroke="#000"/>
-                                <path d="M6 5 11 8 6 11" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <p id="pageListParagraph">To your list</p>
-                        </a>
-                    </div>
-                    </ng-template>
-                </div>
-            </div>
+        <div id="WatchedPageButton">
+            <a style="cursor:pointer" 
+            (click)="toCurrentlyWatchedPage();">
+                <svg height="50px" width="50px" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="8" cy="8" r="5" fill="none" stroke="#000"/>
+                    <path d="M6 5 11 8 6 11" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p id="pageListParagraph">See all the Medias saved</p>
+            </a>
         </div>
+
     </div>
 </main>
