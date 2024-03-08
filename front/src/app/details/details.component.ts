@@ -64,7 +64,7 @@ export class DetailsComponent {
                 map((data:any) => {
                     //console.log(data)
                     this.response=data
-                    this.nextEpisodeImage=data.next_episode_to_air.still_path!=null ? "https://image.tmdb.org/t/p/original"+data.next_episode_to_air.still_path : "assets/img/fallbackIMG.svg"  
+                    this.nextEpisodeImage=data.next_episode_to_air?.still_path!=null ? "https://image.tmdb.org/t/p/original"+data.next_episode_to_air?.still_path : "assets/img/fallbackIMG.svg"  
                 })
             )
             .subscribe(
@@ -75,7 +75,7 @@ export class DetailsComponent {
             this.API.getDetailsMovies(req)
             .pipe(
                 map((data:any) => {
-                    console.log(data)
+                    //console.log(data)
                     this.response=data
                 })
             )
@@ -123,17 +123,18 @@ export class DetailsComponent {
      * This methos verifies if the Object ID matches the URL ID, if true: changes the HTML button to 'Remove from ...' 
      */
     AlreadyInLS(){
+        this.existsLS=false;
         let Objects = this.localStr.getDataObject("Saved")
-        Objects.find((data: SavedI) => {
-            if (data.id === this.id)
+        for (let index = 0; index < Objects.length; index++) {
+            
+            if (Objects[index].id === this.id)
             {
                 this.existsLS=true;
-                this.response=data;
-                this.nextEpisodeImage=data.next_episode_to_air.poster_path!=null ? "https://image.tmdb.org/t/p/original"+data.next_episode_to_air.poster_path : "assets/img/fallbackIMG.svg"
-            } else {
-                this.existsLS=false;
-            }
-        })
+                this.response=Objects[index];
+                this.nextEpisodeImage=Objects[index].next_episode_to_air?.poster_path!=null ? "https://image.tmdb.org/t/p/original"+Objects[index].next_episode_to_air?.poster_path : "assets/img/fallbackIMG.svg"
+                break;
+            } 
+        }
     }
 
     /**

@@ -33,6 +33,7 @@ export class PosterIMGComponent {
 
     ngOnInit(): void {
         this.AlreadyInLS();
+        if (!this.existsLS) this.getImage(this.SourcePosterID, this.SourceMediaType);
     }
 
 
@@ -45,18 +46,18 @@ export class PosterIMGComponent {
      * Checks if the ID or the imageString is already inside of the localStorage array
      */
     AlreadyInLS(){
-        //Doesn't work
-        let Objects: SavedI = this.localstr.getDataObject("Saved");
-            if ( Objects.id === this.SourcePosterID)
-            {   
-                console.log("Hey")
-                this.existsLS=true;
+        
+        let Objects: SavedI[] = this.localstr.getDataObject("Saved");
 
-                this.mainImage=Objects.poster_path;
-            } else {
-                console.log("Not Hey!")
-                this.existsLS=false;
-                this.getImage(this.SourcePosterID, this.SourceMediaType)
+            for (let index = 0; index < Objects.length; index++) {
+                //console.log(this.SourcePosterID)
+                if (Objects[index].id === this.SourcePosterID)
+                {   
+                    //console.log(Objects[index])
+                    this.existsLS=true;
+                    this.mainImage=Objects[index].poster_path;
+                    break;
+                }
             }
     }
     

@@ -49,16 +49,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         //TODO: Figure out how it works
         this.lsObjects.sort((a : any,b: any) => {
-            console.log(a.next_episode_to_air.air_date)
-            if (a.next_episode_to_air.air_date > b.next_episode_to_air.air_date){ 
+            
+            if (a.next_episode_to_air?.air_date > b.next_episode_to_air?.air_date){ 
                 console.log("HU");
                 return 1 ;
             }
-            else if(a.next_episode_to_air.air_date < b.next_episode_to_air.air_date) {
+            else if(a.next_episode_to_air?.air_date < b.next_episode_to_air?.air_date) {
                 console.log("HO")
                 return -1; 
             }
-            else if(a.next_episode_to_air.air_date == b.next_episode_to_air.air_date) {
+            else if(a.next_episode_to_air?.air_date == b.next_episode_to_air?.air_date) {
                 console.log("HOIA")
                 return -1; 
             }
