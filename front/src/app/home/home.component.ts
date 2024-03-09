@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, OnInit, ViewChild, Renderer2, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, Renderer2, ElementRef, AfterContentInit, OnDestroy } from '@angular/core';
 import API from '../_service/API.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { PosterIMGComponent } from '../_components/poster-img/poster-img.component';
@@ -16,27 +16,31 @@ import SavedI from '../_types/SavedI';
   styleUrls: ['../app.component.css', './home.component.css']
 })
 
-export class HomeComponent implements OnInit, AfterViewInit {
-    
+export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
+    response: any;
+    lsObjects: SavedI[];
     movieTitleWidth : number = 0;    
     datalistWidth : number = 0;    
     isTooBig = false;
+    interval : any;
+    //get current date in day/month/fullYear format
+    currentDate: any;
 
 
-    lsObjects: SavedI[];
-
-
-    constructor(private API: API,  private router : Router, private renderer : Renderer2) {
-
+    constructor(private API: API,  private router : Router, private renderer : Renderer2, public datePipe: DatePipe) {
         this.lsObjects=JSON.parse(localStorage.getItem("Saved")!)
-        //console.log(this.lsObjects)
-        //this.lsObjects.sort( (a : any,b: any) => a.ID < b.ID ? -1 : 1 )
-        //console.log(this.lsObjects)
-
+        //console.log(this.currentDate)
     }
 
     ngOnInit(){
-        
+        clearInterval(this.interval);
+        this.currentDate=this.datePipe.transform(new Date(), 'dd/MM/YYYY')
+        //console.log(this.currentDate)
+
+    }
+
+    ngOnDestroy(){
+        clearInterval(this.interval);
     }
     
     @ViewChild('spanTitle', {static: true}) 
@@ -47,27 +51,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     dataListElement!: ElementRef;
     
     ngAfterViewInit() {
-        //TODO: Figure out how it works
-        this.lsObjects.sort((a : any,b: any) => {
-            
-            if (a.next_episode_to_air?.air_date > b.next_episode_to_air?.air_date){ 
-                console.log("HU");
-                return 1 ;
-            }
-            else if(a.next_episode_to_air?.air_date < b.next_episode_to_air?.air_date) {
-                console.log("HO")
-                return -1; 
-            }
-            else if(a.next_episode_to_air?.air_date == b.next_episode_to_air?.air_date) {
-                console.log("HOIA")
-                return -1; 
-            }
-            else{ 
-                console.log("HIA")
-                return -1
-            }
-        })
-
+        //ATTEMPT TO IMPLEMENT SCROLL OF TEXT IF TEXT IS BIGGER THAN OFFSETWIDTH
+        
 
         //console.log(this.dataListElement.nativeElement.clientWidth)
         // this.datalistWidth = (this.dataListElement.nativeElement as HTMLElement).offsetWidth;
@@ -75,9 +60,56 @@ export class HomeComponent implements OnInit, AfterViewInit {
         // console.log(this.movieTitleWidth ,"+", this.datalistWidth )
         // this.isTooBig = this.movieTitleWidth<this.datalistWidth ? true : false;
     }
-    
-    
 
+    ngAfterContentInit(): void {
+
+        if (!this.interval) {
+            this.interval = setInterval(this.refreshData, 10000)
+        }
+
+        //maybe see: https://stackoverflow.com/questions/29829205/sort-an-array-so-that-null-values-always-come-last
+        this.lsObjects.sort((a : any,b: any) => {
+            if(a.next_episode_to_air?.air_date===null) {
+                return 1; 
+            }
+            else if(b.next_episode_to_air?.air_date===null) {
+                return -1; 
+            }else if (a.next_episode_to_air?.air_date > b.next_episode_to_air?.air_date){ 
+                return 1 ;
+            }
+            else if(a.next_episode_to_air?.air_date < b.next_episode_to_air?.air_date) {
+                return -1; 
+            }
+            else if(a.next_episode_to_air?.air_date === b.next_episode_to_air?.air_date) {
+                return 0; 
+            }
+            else if(a.status=="In Production" || b.status=="In Production") {
+                return 1; 
+            }
+            else{ 
+                return 0
+            }
+        })
+    }
+
+    /** 
+     * This function has to be called every x minutes(see setInterval(this.refreshData, 10000)),
+     * if the data in API is different than LS
+     * then update the LS data
+     **/
+    refreshData(){
+        let Objects: any=JSON.parse(localStorage.getItem("Saved")!)
+
+        console.log(Objects)
+        for (var i=0; i< Objects.length; i++) {
+            var element: SavedI = Objects[i];
+            if (element.next_episode_to_air != this.response.next_episode_to_air) {
+                console.log("not good")
+                this.getDataByID(element.id, element.media_type);
+            }
+        }
+
+    }  
     
 
     toDetailsPage(cat: string, id: number){
@@ -124,7 +156,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.API.getDetailsTv(req)
             .pipe(
                 map((data:any) => {
-
+                    this.response=data
                 })
             )
             .subscribe(
@@ -135,7 +167,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.API.getDetailsMovies(req)
             .pipe(
                 map((data:any) => {
-
+                    this.response=data
                 })
             )
             .subscribe(

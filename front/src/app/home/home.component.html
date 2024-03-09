@@ -13,14 +13,14 @@
                         <div id="data-list" #dataList>
                             <div id="content" *ngIf="i<=5; else nextButtonAired">
                                 <div class="HPReleaseInfo" *ngIf="data.media_type=='tv'; else isMovie">
-                                    <span>next episode: <b>{{data.next_episode_to_air.air_date}}</b> <br/></span>
+                                    <span>next episode: <b>{{datePipe.transform(data.next_episode_to_air.air_date, "dd/MM/yyyy")}}</b> <br/></span>
                                     <span>
                                         {{data.next_episode_to_air.name}} ({{data.next_episode_to_air.episode_number +'/'+ data.number_of_episodes}})
                                     </span>
                                 </div>
                                 <ng-template #isMovie>
                                     <div class="HPReleaseInfo"> 
-                                        <span>release date: {{data.release_date || "no info for now"}}</span>
+                                        <span>release date: {{datePipe.transform(data.release_date, "dd/MM/yyyy")}}</span>
                                         <hr />
                                     </div>
                                 </ng-template>
