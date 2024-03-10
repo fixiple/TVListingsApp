@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
     ngAfterContentInit(): void {
 
         if (!this.interval) {
-            this.interval = setInterval(this.refreshData, 10000)
+            this.interval = setInterval(() => this.refreshData(), 10000)
         }
 
         //maybe see: https://stackoverflow.com/questions/29829205/sort-an-array-so-that-null-values-always-come-last
@@ -98,15 +98,27 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
      * then update the LS data
      **/
     refreshData(){
+        //TODO: find a way to get the other data from this.response.next_episode_to_air
+        // FOR NOW it only gets and keeps the last element... from the list
+        // Maybe create a second localStorage Object with only the this.response.next_episode_to_air???
         let Objects: any=JSON.parse(localStorage.getItem("Saved")!)
-
-        console.log(Objects)
+        var element: SavedI[] = [];
+        var datas: any[] = [];
+        //console.log(Objects)
         for (var i=0; i< Objects.length; i++) {
-            var element: SavedI = Objects[i];
-            if (element.next_episode_to_air != this.response.next_episode_to_air) {
-                console.log("not good")
-                this.getDataByID(element.id, element.media_type);
-            }
+            element[i] = Objects[i];
+            this.getDataByID(element[i].id, element[i].media_type);
+            //console.log(element.next_episode_to_air)
+            datas.push(this.response?.next_episode_to_air)
+            // if (element.next_episode_to_air != this.response.next_episode_to_air) {
+            //     console.log("OLD:")
+            //     console.log(element.next_episode_to_air)
+            //     element.next_episode_to_air = this.response.next_episode_to_air
+            //     console.log("NEW:")
+            //     console.log(element.next_episode_to_air)
+            // } else {
+            //     console.log("all good")
+            // }
         }
 
     }  
@@ -150,7 +162,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
     /*
     * Used to refresh data found from object, how? idk.
     */
-
+    
     getDataByID(req: number, media_type: string){
         if (media_type==="tv"){
             this.API.getDetailsTv(req)
