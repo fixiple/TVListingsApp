@@ -19,7 +19,7 @@
     <div *ngFor="let genre of response.genres">
         <p>{{genre.name}}</p>
     </div>
-    <div id="nextEpisodeInfo" *ngIf="response.next_episode_to_air!=''">
+    <div id="nextEpisodeInfo" *ngIf="response?.next_episode_to_air!=''">
         <h3>Next Episode Information</h3>
         <img
             id="nextEpisodePoster"
