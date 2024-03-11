@@ -131,7 +131,12 @@ export class DetailsComponent {
             {
                 this.existsLS=true;
                 this.response=Objects[index];
-                this.nextEpisodeImage=Objects[index].next_episode_to_air?.poster_path!=null ? "https://image.tmdb.org/t/p/original"+Objects[index].next_episode_to_air?.poster_path : "assets/img/fallbackIMG.svg"
+                if (Objects[index].next_episode_to_air.still_path=='' || Objects[index].next_episode_to_air.still_path==null){
+                    this.nextEpisodeImage="assets/img/fallbackIMG.svg";
+                }
+                else{
+                    this.nextEpisodeImage=Objects[index].next_episode_to_air.still_path!='' ? "https://image.tmdb.org/t/p/original"+Objects[index].next_episode_to_air.still_path : "assets/img/fallbackIMG.svg"
+                }
                 break;
             } 
         }

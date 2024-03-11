@@ -17,7 +17,7 @@ import SavedI from '../_types/SavedI';
 })
 
 export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
-    response: any;
+    response: any[] = [];
     lsObjects: SavedI[];
     movieTitleWidth : number = 0;    
     datalistWidth : number = 0;    
@@ -67,7 +67,8 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
             this.interval = setInterval(() => this.refreshData(), 10000)
         }
 
-        //maybe see: https://stackoverflow.com/questions/29829205/sort-an-array-so-that-null-values-always-come-last
+        //will sort the data according to the nearest release Date
+        //ref: https://stackoverflow.com/questions/29829205/sort-an-array-so-that-null-values-always-come-last
         this.lsObjects.sort((a : any,b: any) => {
             if(a.next_episode_to_air?.air_date===null) {
                 return 1; 
@@ -98,7 +99,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
      * then update the LS data
      **/
     refreshData(){
-        //TODO: find a way to get the other data from this.response.next_episode_to_air
+        //TODO (DONE! It's working hehe): find a way to get the other data from this.response.next_episode_to_air
         // FOR NOW it only gets and keeps the last element... from the list
         // Maybe create a second localStorage Object with only the this.response.next_episode_to_air???
         let Objects: any=JSON.parse(localStorage.getItem("Saved")!)
@@ -109,18 +110,49 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
             element[i] = Objects[i];
             this.getDataByID(element[i].id, element[i].media_type);
             //console.log(element.next_episode_to_air)
-            datas.push(this.response?.next_episode_to_air)
-            // if (element.next_episode_to_air != this.response.next_episode_to_air) {
-            //     console.log("OLD:")
-            //     console.log(element.next_episode_to_air)
-            //     element.next_episode_to_air = this.response.next_episode_to_air
-            //     console.log("NEW:")
-            //     console.log(element.next_episode_to_air)
-            // } else {
-            //     console.log("all good")
-            // }
+            datas.push(this.response[i]?.next_episode_to_air)
+            
+            if (element[i].media_type=="tv" && element[i].next_episode_to_air.name!=datas[i] ) {
+                var newObject = {
+                    "id": element[i].id,
+                    "media_type": element[i].media_type,
+                    "name" : element[i].name,
+                    "overview" : element[i].overview,
+                    "tagline": element[i].tagline,
+                    "original_name" : element[i].original_name,
+                    "original_language": element[i].original_language,
+                    "number_of_episodes": element[i].number_of_episodes, 
+                    "current_episode": this.response[i].last_episode_to_air,
+                    "next_episode_to_air": datas[i] || "",
+                    "poster_path" : element[i].poster_path,
+                    "status": element[i].status,
+                    "release_date": element[i].release_date || this.response[i].release_date || "" 
+                }
+                    Objects[i]=newObject;
+                    localStorage.setItem("Saved", JSON.stringify(Objects));
+            } else if (element[i].media_type=="movie" && element[i].release_date != this.response[i].release_date) {
+                var newObject2 = {
+                    "id": element[i].id,
+                    "media_type": element[i].media_type,
+                    "name" : element[i].name,
+                    "overview" : element[i].overview,
+                    "tagline": element[i].tagline,
+                    "original_name" : element[i].original_name,
+                    "original_language": element[i].original_language,
+                    "number_of_episodes": element[i].number_of_episodes, 
+                    "current_episode": element[i].current_episode,
+                    "next_episode_to_air": element[i].next_episode_to_air || "",
+                    "poster_path" : element[i].poster_path,
+                    "status": element[i].status,
+                    "release_date": element[i].release_date || this.response[i].release_date  || "" 
+                }
+                    Objects[i]=newObject2;
+                    localStorage.setItem("Saved", JSON.stringify(Objects));
+            } else {
+                console.log("all good")
+            }
         }
-
+        this.response=[]
     }  
     
 
@@ -168,7 +200,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
             this.API.getDetailsTv(req)
             .pipe(
                 map((data:any) => {
-                    this.response=data
+                    this.response.push(data)
                 })
             )
             .subscribe(
@@ -179,7 +211,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
         this.API.getDetailsMovies(req)
             .pipe(
                 map((data:any) => {
-                    this.response=data
+                    this.response.push(data)
                 })
             )
             .subscribe(
