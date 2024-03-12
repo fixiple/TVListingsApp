@@ -40,3 +40,12 @@
     text-align: center; 
     font-size: medium;
 }
+
+.HPReleaseInfo{
+    max-width: 200px;
+}
+
+.episodeName{
+    overflow-x: auto;
+    
+}

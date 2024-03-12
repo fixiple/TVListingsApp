@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, Renderer2, ElementRef, AfterContentInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChildren, Renderer2, ElementRef, AfterContentInit, OnDestroy } from '@angular/core';
 import API from '../_service/API.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { map } from 'rxjs';
@@ -43,28 +43,35 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
         clearInterval(this.interval);
     }
     
-    @ViewChild('spanTitle', {static: true}) 
-    movieTitleElement!: ElementRef;
-    @ViewChild('titleContainer', {static: true}) 
-    titleContainerElement!: ElementRef;
-    @ViewChild('dataList') 
-    dataListElement!: ElementRef;
+    // @ViewChild('spanTitle', {static: true}) 
+    // movieTitleElement!: ElementRef;
+    // @ViewChild('titleContainer', {static: true}) 
+    // titleContainerElement!: ElementRef;
+    @ViewChildren('HPReleaseInfo') 
+    releaseElement!: ElementRef[];
     
     ngAfterViewInit() {
         //ATTEMPT TO IMPLEMENT SCROLL OF TEXT IF TEXT IS BIGGER THAN OFFSETWIDTH
+        //BUT HOW TO GET THE WIDTH OF A DOM ELEMENT??
+        this.scrollingText()
         
-
-        //console.log(this.dataListElement.nativeElement.clientWidth)
-        // this.datalistWidth = (this.dataListElement.nativeElement as HTMLElement).offsetWidth;
-        // this.movieTitleWidth = (this.movieTitleElement.nativeElement as HTMLElement).offsetWidth;
-        // console.log(this.movieTitleWidth ,"+", this.datalistWidth )
-        // this.isTooBig = this.movieTitleWidth<this.datalistWidth ? true : false;
+        let data=this.releaseElement;
+        let element: ElementRef;
+        let result: any;
+        for (let index = 0; index < this.releaseElement.length; index++) {
+            element = data[index].nativeElement;
+            console.log(element)
+            //result=element._results;
+            console.log(result)
+        }
+        
     }
 
     ngAfterContentInit(): void {
 
         if (!this.interval) {
-            this.interval = setInterval(() => this.refreshData(), 10000)
+            //the refreshData will be launched every 60 seconds*30 = 30 minutes
+            this.interval = setInterval(() => this.refreshData(), ((1000*60)*30))
         }
 
         //will sort the data according to the nearest release Date
@@ -91,6 +98,14 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
                 return 0
             }
         })
+    }
+
+
+    scrollingText(){
+        //this.datalistWidth = (this.dataListElement.nativeElement as HTMLElement).offsetWidth;
+        // this.movieTitleWidth = (this.movieTitleElement.nativeElement as HTMLElement).offsetWidth;
+        // console.log(this.movieTitleWidth ,"+", this.datalistWidth )
+        // this.isTooBig = this.movieTitleWidth<this.datalistWidth ? true : false;
     }
 
     /** 

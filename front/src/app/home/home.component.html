@@ -12,10 +12,13 @@
                 <ng-container *ngFor="let data of lsObjects; index as i">
                         <div id="data-list" #dataList>
                             <div id="content" *ngIf="i<=5; else nextButtonAired">
-                                <div class="HPReleaseInfo" *ngIf="data.media_type=='tv'; else isMovie">
+                                <div class="HPReleaseInfo" *ngIf="data.media_type=='tv'; else isMovie" #HPReleaseInfo>
                                     <span>next episode: <b>{{datePipe.transform(data.next_episode_to_air.air_date, "dd/MM/yyyy")}}</b> <br/></span>
+                                    <span [ngClass]="isTooBig ? 'animate-leftRight episodeName' : 'episodeName'">
+                                        {{data.next_episode_to_air.name}} 
+                                    </span>
                                     <span>
-                                        {{data.next_episode_to_air.name}} ({{data.next_episode_to_air.episode_number +'/'+ data.number_of_episodes}})
+                                        ({{data.next_episode_to_air.episode_number +'/'+ data.number_of_episodes}})
                                     </span>
                                 </div>
                                 <ng-template #isMovie>
