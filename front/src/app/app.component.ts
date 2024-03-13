@@ -14,7 +14,7 @@ export class AppComponent {
   //READ : https://v6.material.angular.io/components/dialog/overview
   //used to open and close Modal Dialog windows
   openModalView(){
-
+//element[i].nativeElement.Children[1].offsetWidth
     console.log("Dialog box opened")
   }
 

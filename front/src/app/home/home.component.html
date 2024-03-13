@@ -14,9 +14,11 @@
                             <div id="content" *ngIf="i<=5; else nextButtonAired">
                                 <div class="HPReleaseInfo" *ngIf="data.media_type=='tv'; else isMovie" #HPReleaseInfo>
                                     <span>next episode: <b>{{datePipe.transform(data.next_episode_to_air.air_date, "dd/MM/yyyy")}}</b> <br/></span>
-                                    <span [ngClass]="isTooBig ? 'animate-leftRight episodeName' : 'episodeName'">
+                                    <span [ngClass]="epiNameisTooBig ? 'animate-leftRight episodeName' : 'episodeName'">
                                         {{data.next_episode_to_air.name}} 
                                     </span>
+                                    <span [ngClass]="epiNameisTooBig[i] ? 'fader fader-left' : ''"></span>
+                                    <span [ngClass]="epiNameisTooBig[i] ? 'fader fader-right' : ''"></span>
                                     <span>
                                         ({{data.next_episode_to_air.episode_number +'/'+ data.number_of_episodes}})
                                     </span>
@@ -32,9 +34,9 @@
                                 (click)="toDetailsPage(data.media_type,data.id);">
                                 <div class="container">
                                     <div class="title-container" #titleContainer>
-                                        <span [ngClass]="isTooBig ? 'animate-leftRight' : '' " #spanTitle>{{data.name || data.name}}</span>
-                                        <span [ngClass]="isTooBig ? 'fader fader-left' : ''"></span>
-                                        <span [ngClass]="isTooBig ? 'fader fader-right' : ''"></span>
+                                        <span [ngClass]="titleisTooBig[i] ? 'animate-leftRight' : '' " #spanTitle>{{data.name || data.name}}</span>
+                                        <span [ngClass]="titleisTooBig[i] ? 'fader fader-left' : ''"></span>
+                                        <span [ngClass]="titleisTooBig[i] ? 'fader fader-right' : ''"></span>
                                     </div>
                                 </div>
                                 </a>

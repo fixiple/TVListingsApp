@@ -12,7 +12,7 @@
 }
 
 #data-list{
-    width: 200px;
+    width: 201px;
 
 }
 
@@ -42,10 +42,10 @@
 }
 
 .HPReleaseInfo{
-    max-width: 200px;
+    max-width: 201px;
 }
 
 .episodeName{
     overflow-x: auto;
-    
+    white-space: nowrap;
 }

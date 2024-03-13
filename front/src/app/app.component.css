@@ -19,3 +19,20 @@ a{
     text-decoration: underline;
     color:aquamarine;
 }
+
+.fader {
+    position: static;
+    top: 0;
+    height: 100%;
+    width: 25px;
+}
+
+.fader.fader-left {
+    left: 0;
+    background: linear-gradient(to left, transparent, var(--section-1-fader-bg-color));
+}
+
+.fader.fader-right {
+    right: 0;
+    background: linear-gradient(to right, transparent, var(--section-1-fader-bg-color));
+}

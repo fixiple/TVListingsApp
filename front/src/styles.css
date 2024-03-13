@@ -89,7 +89,7 @@ body{
 
 
 .fader {
-    position: absolute;
+    position: static;
     top: 0;
     height: 100%;
     width: 25px;
