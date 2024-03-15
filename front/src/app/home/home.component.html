@@ -14,11 +14,11 @@
                             <div id="content" *ngIf="i<=5; else nextButtonAired">
                                 <div class="HPReleaseInfo" *ngIf="data.media_type=='tv'; else isMovie" #HPReleaseInfo>
                                     <span>next episode: <b>{{datePipe.transform(data.next_episode_to_air.air_date, "dd/MM/yyyy")}}</b> <br/></span>
-                                    <span [ngClass]="epiNameisTooBig ? 'animate-leftRight episodeName' : 'episodeName'">
-                                        {{data.next_episode_to_air.name}} 
+                                    <span [ngClass]="epiNameisTooBig[i] ? 'animate-leftRight episodeName' : 'episodeName'">
+                                        <p>{{data.next_episode_to_air.name}}</p> 
                                     </span>
-                                    <span [ngClass]="epiNameisTooBig[i] ? 'fader fader-left' : ''"></span>
-                                    <span [ngClass]="epiNameisTooBig[i] ? 'fader fader-right' : ''"></span>
+                                    <span *ngIf="epiNameisTooBig[i]" class="fader fader-left"></span>
+                                    <span *ngIf="epiNameisTooBig[i]" class="fader fader-right"></span>
                                     <span>
                                         ({{data.next_episode_to_air.episode_number +'/'+ data.number_of_episodes}})
                                     </span>

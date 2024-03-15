@@ -38,7 +38,6 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
         clearInterval(this.interval);
         this.currentDate=this.datePipe.transform(new Date(), 'dd/MM/YYYY')
         //console.log(this.currentDate)
-
     }
 
     ngOnDestroy(){
@@ -65,7 +64,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
 
 
     ngAfterContentInit(): void {
-
+        
         if (!this.interval) {
             //the refreshData will be launched every 60 seconds*30 = 30 minutes
             this.interval = setInterval(() => this.refreshData(), ((1000*60)*30))
@@ -95,7 +94,6 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
                 return 0
             }
         })
-        
     }
 
 
@@ -107,7 +105,6 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
 
         let data: any=this.releaseElement.toArray();
         const element: any = data;
-        let htmlToAdd = '<div class="two">two</div>';
         //this will always be the same number
         let parentOffSetWidth=data[0].nativeElement.offsetWidth 
         
@@ -120,10 +117,14 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
             //console.log(titleWidth+episodeNumWidth)
             if(element[index].nativeElement.nextElementSibling.offsetTop>125){
                 console.log("TOO BIG")
-                this.epiNameisTooBig[index]=true;
+                setTimeout(()=> {
+                    this.epiNameisTooBig[index]=true;
+                }, 0);
             }
             else {
-                this.epiNameisTooBig[index]=false;
+                setTimeout(()=> {
+                    this.epiNameisTooBig[index]=false;
+                }, 0);
             }
         }
     }

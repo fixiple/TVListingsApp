@@ -43,9 +43,24 @@
 
 .HPReleaseInfo{
     max-width: 201px;
+    overflow: hidden;
+}
+.episodeName p{
+    display: inline
 }
 
-.episodeName{
-    overflow-x: auto;
-    white-space: nowrap;
+.fader {
+    position: relative;
+    top: 0;
+
+}
+
+.fader.fader-left {
+    left: 0;
+    background: linear-gradient(to left, transparent, var(--section-1-fader-bg-color));
+}
+
+.fader.fader-right {
+    right: 0;
+    background: linear-gradient(to right, transparent, var(--section-1-fader-bg-color));
 }
