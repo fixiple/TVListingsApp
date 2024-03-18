@@ -11,7 +11,13 @@
         <span class="tooltiptext">Original Title:<br/>{{response.original_name || response.original_title}}</span>
     </div>
     <br/>
-    <app-poster-img [SourcePosterID]="id" [SourceMediaType]="media_type" [posterWidth]="200"></app-poster-img>
+    <img
+    id="PosterImage"
+    [src]="posterImage"
+    alt="noice" 
+    loading="lazy"
+    width="200px"
+    />
     <h5>{{response.first_air_date || response.release_date}}</h5>
     <h5>{{response.status}}</h5>
     <p>{{response.overview}}</p>
@@ -19,7 +25,7 @@
     <div *ngFor="let genre of response.genres">
         <p>{{genre.name}}</p>
     </div>
-    <div id="nextEpisodeInfo" *ngIf="response?.next_episode_to_air!=''">
+    <div id="nextEpisodeInfo" *ngIf="response?.next_episode_to_air!=null">
         <h3>Next Episode Information</h3>
         <img
             id="nextEpisodePoster"

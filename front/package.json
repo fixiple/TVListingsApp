@@ -1,9 +1,11 @@
 {
   "name": "front",
   "version": "0.0.0",
+  "comment" :"How to access website in localStorage from any computer in local : https://stackoverflow.com/a/52570092, How to setup port in Firewall: https://stackoverflow.com/a/22776230",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "local": "ng serve --host 0.0.0.0 --port 4782",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

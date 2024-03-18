@@ -23,6 +23,7 @@ export class DetailsComponent {
     media_type : string = "";
     existsLS: boolean = false;
     nextEpisodeImage="";
+    posterImage='';
 
     /**
      * The response variable after making the API request.
@@ -33,6 +34,7 @@ export class DetailsComponent {
 
     constructor(private API : API, private route : ActivatedRoute, private localStr : localStr, private _location: Location){}
     ngOnInit(){
+        this.posterImage
         this.details = this.route.params.subscribe((params: any) => {
             this.media_type = params['cat'];
             this.id = +params['id']; //+ transforms string into integer/number, see: https://stackoverflow.com/a/41969665
@@ -65,6 +67,7 @@ export class DetailsComponent {
                     //console.log(data)
                     this.response=data
                     this.nextEpisodeImage=data.next_episode_to_air?.still_path!=null ? "https://image.tmdb.org/t/p/original"+data.next_episode_to_air?.still_path : "assets/img/fallbackIMG.svg"  
+                    this.posterImage="https://image.tmdb.org/t/p/original"+data.poster_path
                 })
             )
             .subscribe(
@@ -77,6 +80,7 @@ export class DetailsComponent {
                 map((data:any) => {
                     //console.log(data)
                     this.response=data
+                    this.posterImage="https://image.tmdb.org/t/p/original"+data.poster_path
                 })
             )
             .subscribe(
@@ -124,13 +128,14 @@ export class DetailsComponent {
      */
     AlreadyInLS(){
         this.existsLS=false;
-        let Objects = this.localStr.getDataObject("Saved")
+        let Objects = this.localStr.getDataObject("Saved") || []
         for (let index = 0; index < Objects.length; index++) {
             
             if (Objects[index].id === this.id)
             {
                 this.existsLS=true;
                 this.response=Objects[index];
+                this.posterImage="https://image.tmdb.org/t/p/original"+this.response.poster_path;
                 if (Objects[index].next_episode_to_air.still_path=='' || Objects[index].next_episode_to_air.still_path==null){
                     this.nextEpisodeImage="assets/img/fallbackIMG.svg";
                 }
@@ -147,7 +152,7 @@ export class DetailsComponent {
      */
     //See: https://sentry.io/answers/remove-specific-item-from-array/#combining-indexof-and-splice-methods
     DeleteFromLS(){
-        let Objects: any=this.localStr.getDataObject("Saved")
+        let Objects: any=this.localStr.getDataObject("Saved") || []
 
         for (var i=0; i< Objects.length; i++) {
             if (Objects[i].id == this.id) {

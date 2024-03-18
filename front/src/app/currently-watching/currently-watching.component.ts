@@ -32,7 +32,7 @@ export class CurrentlyWatchingComponent{
             if (Objects[i].id == id) {
                 Objects.splice(i, 1);
                 //console.log("item deleted")
-                this.localStr.saveDataObject("Saved_Objects", Objects)
+                this.localStr.saveDataObject("Saved", Objects)
             }
         }
         window.location.reload();

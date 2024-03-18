@@ -25,23 +25,28 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
     epiNameisTooBig: boolean[]=[];
     titleisTooBig: boolean[]=[];
     interval : any;
-    //get current date in day/month/fullYear format
-    currentDate: any;
+    refreshTime: number = 30;
+    
+    currentDate: any; //get current date in day/month/fullYear format
 
 
     constructor(private API: API,  private router : Router, private renderer : Renderer2, public datePipe: DatePipe, private cdref: ChangeDetectorRef) {
-        this.lsObjects=JSON.parse(localStorage.getItem("Saved")!)
+        this.lsObjects=JSON.parse(localStorage.getItem("Saved")!) || [];
+        this.getData();
+        this.currentDate=this.datePipe.transform(new Date(), 'dd/MM/YYYY');
         //console.log(this.currentDate)
     }
 
     ngOnInit(){
         clearInterval(this.interval);
-        this.currentDate=this.datePipe.transform(new Date(), 'dd/MM/YYYY')
-        //console.log(this.currentDate)
+
+        
+
     }
 
     ngOnDestroy(){
         clearInterval(this.interval);
+        this.response=[]
     }
     
     // @ViewChild('spanTitle', {static: true}) 
@@ -54,22 +59,18 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
     ngAfterViewInit() {
         //ERROR HERE : 
         // ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: ''. Current value: 'fader fader-left'. Expression location: _HomeComponent component
-        this.scrollingText()
-        
-
-        
+        this.scrollingText()        
     }
 
 
 
 
     ngAfterContentInit(): void {
-        
         if (!this.interval) {
             //the refreshData will be launched every 60 seconds*30 = 30 minutes
-            this.interval = setInterval(() => this.refreshData(), ((1000*60)*30))
+            this.interval = setInterval(() => this.refreshData(), ((1000*60)*this.refreshTime))
         }
-
+        //console.log(this.response)
         //will sort the data according to the nearest release Date
         //ref: https://stackoverflow.com/questions/29829205/sort-an-array-so-that-null-values-always-come-last
         this.lsObjects.sort((a : any,b: any) => {
@@ -96,6 +97,24 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
         })
     }
 
+    /** 
+     * Initialises the Data from the API and stores them inside of response[] variable 
+    **/
+    getData(){
+        var element;
+        if  (this.lsObjects.length<=0) {
+            console.log("Please save a show in the watch list")
+        } else {
+            for (var i=0; i< this.lsObjects.length; i++) {
+                element = this.lsObjects[i];
+                if (element.media_type=="movie"){
+                    this.getDataByID(element.id, "movie")  
+                } else {
+                    this.getDataByID(element.id, "tv")
+                }
+            }
+        }
+    }
 
     scrollingText(){
         //this.datalistWidth = (this.dataListElement.nativeElement as HTMLElement).offsetWidth;
@@ -103,10 +122,10 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
         // console.log(this.movieTitleWidth ,"+", this.datalistWidth )
         // this.isTooBig = this.movieTitleWidth<this.datalistWidth ? true : false;
 
-        let data: any=this.releaseElement.toArray();
+        let data: any=this.releaseElement?.toArray();
         const element: any = data;
         //this will always be the same number
-        let parentOffSetWidth=data[0].nativeElement.offsetWidth 
+        let parentOffSetWidth=data[0]?.nativeElement.offsetWidth 
         
         for (let index = 0; index < data.length; index++) {
             let titleWidth=element[index].nativeElement.children[1].offsetWidth
@@ -117,6 +136,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
             //console.log(titleWidth+episodeNumWidth)
             if(element[index].nativeElement.nextElementSibling.offsetTop>125){
                 console.log("TOO BIG")
+                //SEE HERE: https://stackoverflow.com/questions/43375532/expressionchangedafterithasbeencheckederror-explained
                 setTimeout(()=> {
                     this.epiNameisTooBig[index]=true;
                 }, 0);
@@ -131,7 +151,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
 
     /** 
      * This function has to be called every x minutes(see setInterval(this.refreshData, 10000)),
-     * if the data in API is different than LS
+     * if the data (Object) in API is different than LS (Object)
      * then update the LS data
      **/
     refreshData(){
@@ -140,34 +160,18 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
         // Maybe create a second localStorage Object with only the this.response.next_episode_to_air???
         let Objects: any=JSON.parse(localStorage.getItem("Saved")!)
         var element: SavedI[] = [];
-        var datas: any[] = [];
+        var datas: Object[] = [];
         //console.log(Objects)
+        
+        
         for (var i=0; i< Objects.length; i++) {
             element[i] = Objects[i];
-            this.getDataByID(element[i].id, element[i].media_type);
-            //console.log(element.next_episode_to_air)
             datas.push(this.response[i]?.next_episode_to_air)
-            
-            if (element[i].media_type=="tv" && element[i].next_episode_to_air.name!=datas[i]?.name ) {
-                var newObject = {
-                    "id": element[i].id,
-                    "media_type": element[i].media_type,
-                    "name" : element[i].name,
-                    "overview" : element[i].overview,
-                    "tagline": element[i].tagline,
-                    "original_name" : element[i].original_name,
-                    "original_language": element[i].original_language,
-                    "number_of_episodes": element[i].number_of_episodes, 
-                    "current_episode": this.response[i]?.last_episode_to_air,
-                    "next_episode_to_air": datas[i] || "",
-                    "poster_path" : element[i].poster_path,
-                    "status": element[i].status,
-                    "release_date": element[i].release_date || this.response[i]?.release_date || "" 
-                }
-                    Objects[i]=newObject;
-                    localStorage.setItem("Saved", JSON.stringify(Objects));
-                    
-            } else if (element[i].media_type=="movie" && element[i].release_date != this.response[i]?.release_date) {
+
+            // SEE HERE : https://stackoverflow.com/questions/52049872/how-to-compare-by-two-objects-typescript-angular6
+            if (element[i]["media_type"]==="tv" && JSON.stringify(element[i]["next_episode_to_air"]) === JSON.stringify(datas[i]) ) {
+                console.log("all good")
+            } else if (element[i].media_type=="movie" && JSON.stringify(element[i]["release_date"])!==JSON.stringify(this.response[i].release_date)) {
                 var newObject2 = {
                     "id": element[i].id,
                     "media_type": element[i].media_type,
@@ -178,20 +182,35 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
                     "original_language": element[i].original_language,
                     "number_of_episodes": element[i].number_of_episodes, 
                     "current_episode": element[i].current_episode,
-                    "next_episode_to_air": element[i].next_episode_to_air || "",
+                    "next_episode_to_air": element[i].next_episode_to_air,
                     "poster_path" : element[i].poster_path,
                     "status": element[i].status,
-                    "release_date": element[i].release_date || this.response[i]?.release_date  || "" 
+                    "release_date": element[i].release_date || this.response[i]?.release_date 
                 }
                     Objects[i]=newObject2;
                     localStorage.setItem("Saved", JSON.stringify(Objects));
                     
             } else {
-                console.log("all good")
-            }
+                var newObject = {
+                    "id": element[i].id,
+                    "media_type": element[i].media_type,
+                    "name" : element[i].name,
+                    "overview" : element[i].overview,
+                    "tagline": element[i].tagline,
+                    "original_name" : element[i].original_name,
+                    "original_language": element[i].original_language,
+                    "number_of_episodes": element[i].number_of_episodes, 
+                    "current_episode": this.response[i]?.last_episode_to_air,
+                    "next_episode_to_air": datas[i],
+                    "poster_path" : element[i].poster_path,
+                    "status": element[i].status,
+                    "release_date": element[i].release_date || this.response[i]?.release_date 
+                }
+                    Objects[i]=newObject;
+                    localStorage.setItem("Saved", JSON.stringify(Objects));
+            }  
         }
-        this.response=[]
-    }  
+    }
     
 
     toDetailsPage(cat: string, id: number){
