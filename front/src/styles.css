@@ -122,3 +122,9 @@ th{
     background-color: #029962;
     color: white;
 }
+
+.backdropBackground{
+    background-color: #555;
+    filter: blur(10px);
+    opacity: 0.7 !important;
+}
