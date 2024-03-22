@@ -33,7 +33,7 @@ export default class API{
     }
 
     /**
-     * Get The Details about a certain movie.
+     * Get The Details about a certain tv series.
      * @param {number} series_ID  The ID of a articular TV Series or Anime (ex: 872585)
      * @param {String} language  The language we wanna get the data back as (ex: "en-US" for  United States English)
      * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
@@ -49,6 +49,25 @@ export default class API{
             httpOptions
         )
     }
+
+/**
+     * Get The Details about tv series season.
+     * @param {number} series_ID  The ID of a articular TV Series or Anime (ex: 872585)
+     * @param {number} season_number  The season number of the articular TV Series/Anime (default=1)
+     * @param {String} language  The language we wanna get the data back as (ex: "en-US" for  United States English)
+     * @returns {JSON} Returns JSON object containing data (but need to subscribe...)
+    **/
+public getDetailsTvSeason(series_ID : number, season_number : number = 1, language : String = "en" ) : any {
+    this.headers.append('accept','application/json')
+    const httpOptions = {
+        headers: this.headers 
+    };
+    let url='https://api.themoviedb.org/3/tv/'+series_ID+'/season/'+season_number+'?language='+language+'&api_key='+API_KEY
+    return this.http.get(
+        url,
+        httpOptions
+    )
+}
 
     /**
      * Get The Details about a certain movie.

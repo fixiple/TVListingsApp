@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import API from '../_service/API.service';
 import { CommonModule, Location} from '@angular/common';
 import { map } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import localStr from '../_service/localStr';
 import { PosterIMGComponent } from '../_components/poster-img/poster-img.component';
 import SavedI from '../_types/SavedI';
@@ -11,7 +11,7 @@ import SavedI from '../_types/SavedI';
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [CommonModule, PosterIMGComponent],
+  imports: [CommonModule, PosterIMGComponent,RouterOutlet],
   providers: [API, localStr],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
@@ -24,6 +24,7 @@ export class DetailsComponent {
     existsLS: boolean = false;
     nextEpisodeImage="";
     posterImage='';
+    seasons: any=[]
 
     /**
      * The response variable after making the API request.
@@ -32,7 +33,7 @@ export class DetailsComponent {
     **/
     response: any = {};
 
-    constructor(private API : API, private route : ActivatedRoute, private localStr : localStr, private _location: Location){}
+    constructor(private API : API, private route : ActivatedRoute, private router : Router, private localStr : localStr, private _location: Location){}
     ngOnInit(){
         this.posterImage
         this.details = this.route.params.subscribe((params: any) => {
@@ -68,6 +69,8 @@ export class DetailsComponent {
                     this.response=data
                     this.nextEpisodeImage=data.next_episode_to_air?.still_path!=null ? "https://image.tmdb.org/t/p/original"+data.next_episode_to_air?.still_path : "assets/img/fallbackIMG.svg"  
                     this.posterImage="https://image.tmdb.org/t/p/original"+data.poster_path
+                    this.seasons=data.seasons
+                    console.log(this.seasons)
                 })
             )
             .subscribe(
@@ -98,6 +101,15 @@ export class DetailsComponent {
         this._location.back();
     }
 
+    toSeasonDetailsPage(seaN: number) : void{
+        // console.log(id)
+        this.router.navigate(['season'],             
+        {
+            queryParams: {"id" : this.id, "num" : seaN}, 
+            queryParamsHandling: 'merge'
+        })
+    }
+
     /**
      * This method saves the current data's ID and MediaType in localStorage (Object Format)
      */
@@ -114,6 +126,7 @@ export class DetailsComponent {
             "number_of_episodes": this.response.number_of_episodes || "", 
             "current_episode": this.response.last_episode_to_air || "",
             "next_episode_to_air": this.response.next_episode_to_air || "",
+            "seasons": this.response.seasons || "",
             "poster_path" : this.response.poster_path || "",
             "status": this.response.status || "", 
         }

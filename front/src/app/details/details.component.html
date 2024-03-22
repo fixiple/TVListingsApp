@@ -4,49 +4,65 @@
 </a>
 
 <div class="response">
-    <div class="tooltip">
-        <h1>
-            {{response.name || response.title}}
-        </h1>
-        <span class="tooltiptext">Original Title:<br/>{{response.original_name || response.original_title}}</span>
-    </div>
-    <br/>
-    <img
-    id="PosterImage"
-    [src]="posterImage"
-    alt="noice" 
-    loading="lazy"
-    width="200px"
-    />
-    <h5>{{response.first_air_date || response.release_date}}</h5>
-    <h5>{{response.status}}</h5>
-    <p>{{response.overview}}</p>
-    <p>{{response.runtime==0 ? 'no runtime data!' : response.runtime}}</p>
-    <div *ngFor="let genre of response.genres">
-        <p>{{genre.name}}</p>
-    </div>
-    <div id="nextEpisodeInfo" *ngIf="response?.next_episode_to_air!=null">
-        <h3>Next Episode Information</h3>
+    <div class="pageContainer">
+        <div class="tooltip">
+            <h1>
+                {{response.name || response.title}}
+            </h1>
+            <span class="tooltiptext">Original Title:<br/>{{response.original_name || response.original_title}}</span>
+        </div>
+        <br/>
         <img
-            id="nextEpisodePoster"
-            [src]="nextEpisodeImage"
-            alt="noice" 
-            loading="lazy"
-            width="200px"
+        id="PosterImage"
+        [src]="posterImage"
+        alt="noice" 
+        loading="lazy"
+        width="200px"
         />
-        <div id="nextEpisode">
-            <div id="nextEpisodeText">
-                <p>Episode title: {{response.next_episode_to_air.name}}</p>
-                <p>Episode number: {{response.next_episode_to_air.episode_number}}</p>
-                <p>Release date: {{response.next_episode_to_air.air_date}}</p>
+        <h5>{{response.first_air_date || response.release_date}}</h5>
+        <h5>{{response.status}}</h5>
+        <p>{{response.overview}}</p>
+        <p>{{response.runtime==0 ? 'no runtime data!' : response.runtime}}</p>
+        <div id="genreContainer" *ngFor="let genre of response.genres">
+            <p class="genre">{{genre.name}}</p>
+        </div>
+        <div class="seasonContainer">
+            <ng-container *ngFor="let season of response.seasons; index as i">
+            <a style="cursor:pointer" (click)="toSeasonDetailsPage(season.season_number)">
+                <img 
+                class="SeasonImage"
+                src="{{season.poster_path!=null ? 'https://image.tmdb.org/t/p/original'+season?.poster_path : 'assets/img/fallbackIMG.svg'}}"
+                alt="Poster for the {{season.name}} Arc" 
+                loading="lazy"
+                width="200px"
+                />
+            </a>
+            </ng-container>
+        </div>
+        <div id="nextEpisodeInfo" *ngIf="response?.next_episode_to_air!=null">
+            <h3>Next Episode Information for {{seasons[response?.next_episode_to_air.season_number]?.name}} Arc</h3>
+            <img
+                id="nextEpisodePoster"
+                [src]="nextEpisodeImage"
+                alt="noice" 
+                loading="lazy"
+                width="200px"
+            />
+            <div id="nextEpisode">
+                <div id="nextEpisodeText">
+                    <p>Episode title: {{response.next_episode_to_air.name}}</p>
+                    <p>Episode number: {{response.next_episode_to_air.episode_number}}</p>
+                    <p>Release date: {{response.next_episode_to_air.air_date}}</p>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div class="actionWithData" *ngIf="!this.existsLS">
-        <input type="button" value="Add to Watchlist" (click)="AddIntoLS()">
-    </div>
-    <div class="actionWithData" *ngIf="this.existsLS">
-        <input type="button" value="Delete From Watchlist" (click)="DeleteFromLS()">
+        
+        <div class="actionWithData" *ngIf="!this.existsLS">
+            <input type="button" value="Add to Watchlist" (click)="AddIntoLS()">
+        </div>
+        <div class="actionWithData" *ngIf="this.existsLS">
+            <input type="button" value="Delete From Watchlist" (click)="DeleteFromLS()">
+        </div>
     </div>
 </div>
+<router-outlet></router-outlet>
