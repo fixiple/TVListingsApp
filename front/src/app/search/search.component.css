@@ -1,0 +1,4 @@
+.pageContainer{
+    padding: 0 100px 25px 100px;
+    background-color: var(--section-1-bg-color);
+}
