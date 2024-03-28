@@ -40,8 +40,6 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
     ngOnInit(){
         clearInterval(this.interval);
 
-        
-
     }
 
     ngOnDestroy(){
@@ -68,7 +66,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
     ngAfterContentInit(): void {
         if (!this.interval) {
             //the refreshData will be launched every 60 seconds*30 = 30 minutes
-            this.interval = setInterval(() => this.refreshData(), ((1000*60)*this.refreshTime))
+            this.interval = setInterval(() => this.refreshData(), ((1000*5)))
         }
         //console.log(this.response)
         //will sort the data according to the nearest release Date
@@ -113,6 +111,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
                     this.getDataByID(element.id, "tv")
                 }
             }
+            console.log("data refreshed!")
         }
     }
 
@@ -160,38 +159,24 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
         // Maybe create a second localStorage Object with only the this.response.next_episode_to_air???
         let Objects: any=JSON.parse(localStorage.getItem("Saved")!)
         var element: SavedI[] = [];
-        var datas: Object[] = [];
+        var datas: any[] = [];
+        let titleEpisode: any;
         //console.log(Objects)
         
         
         for (var i=0; i< Objects.length; i++) {
+            var newObject: SavedI;
             element[i] = Objects[i];
             datas.push(this.response[i]?.next_episode_to_air)
-
+            titleEpisode=this.response[i].next_episode_to_air.name
+            // console.log(element[i]["next_episode_to_air"]["name"]) 
+            // console.log(JSON.stringify(element[i]["next_episode_to_air"]) === JSON.stringify(datas[i]))
+            
+            
             // SEE HERE : https://stackoverflow.com/questions/52049872/how-to-compare-by-two-objects-typescript-angular6
-            if (element[i]["media_type"]==="tv" && JSON.stringify(element[i]["next_episode_to_air"]) === JSON.stringify(datas[i]) ) {
-                console.log("all good")
-            } else if (element[i].media_type=="movie" && JSON.stringify(element[i]["release_date"])!==JSON.stringify(this.response[i].release_date)) {
-                var newObject2 = {
-                    "id": element[i].id,
-                    "media_type": element[i].media_type,
-                    "name" : element[i].name,
-                    "overview" : element[i].overview,
-                    "tagline": element[i].tagline,
-                    "original_name" : element[i].original_name,
-                    "original_language": element[i].original_language,
-                    "number_of_episodes": element[i].number_of_episodes, 
-                    "current_episode": element[i].current_episode,
-                    "next_episode_to_air": element[i].next_episode_to_air,
-                    "poster_path" : element[i].poster_path,
-                    "status": element[i].status,
-                    "release_date": element[i].release_date || this.response[i]?.release_date 
-                }
-                    Objects[i]=newObject2;
-                    localStorage.setItem("Saved", JSON.stringify(Objects));
-                    
-            } else {
-                var newObject = {
+            if (element[i]["media_type"]==="tv" && JSON.stringify(element[i]["next_episode_to_air"]) !== JSON.stringify(datas[i]) ) {
+                newObject = 
+                {
                     "id": element[i].id,
                     "media_type": element[i].media_type,
                     "name" : element[i].name,
@@ -203,12 +188,36 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit, O
                     "current_episode": this.response[i]?.last_episode_to_air,
                     "next_episode_to_air": datas[i],
                     "poster_path" : element[i].poster_path,
+                    "seasons": element[i].seasons,
+                    "genres": element[i].genres,
                     "status": element[i].status,
                     "release_date": element[i].release_date || this.response[i]?.release_date 
                 }
-                    Objects[i]=newObject;
-                    localStorage.setItem("Saved", JSON.stringify(Objects));
-            }  
+                Objects[i]=newObject;
+                localStorage.setItem("Saved", JSON.stringify(Objects));
+            }  else if (element[i].media_type=="movie" && JSON.stringify(element[i]["release_date"])!==JSON.stringify(this.response[i].release_date)) {
+                newObject = {
+                    "id": element[i].id,
+                    "media_type": element[i].media_type,
+                    "name" : element[i].name,
+                    "overview" : element[i].overview,
+                    "tagline": element[i].tagline,
+                    "original_name" : element[i].original_name,
+                    "original_language": element[i].original_language,
+                    "number_of_episodes": element[i].number_of_episodes, 
+                    "current_episode": element[i].current_episode,
+                    "next_episode_to_air": element[i].next_episode_to_air,
+                    "poster_path" : element[i].poster_path,
+                    "seasons": element[i].seasons,
+                    "genres": element[i].genres,
+                    "status": element[i].status,
+                    "release_date": element[i].release_date || this.response[i]?.release_date 
+                }
+                Objects[i]=newObject;
+                localStorage.setItem("Saved", JSON.stringify(Objects));
+            } else {
+                    console.log("all good")
+                }
         }
     }
     

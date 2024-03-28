@@ -7,9 +7,9 @@
     <div class="pageContainer">
         <div class="tooltip">
             <h1>
-                {{response.name || response.title}}
+                {{response.name || response.title || undefined}}
             </h1>
-            <span class="tooltiptext">Original Title:<br/>{{response.original_name || response.original_title}}</span>
+            <span class="tooltiptext">Original Title:<br/>{{response.original_name || response.original_title || undefined}}</span>
         </div>
         <br/>
         <img
@@ -19,20 +19,20 @@
         loading="lazy"
         width="200px"
         />
-        <h5>{{response.first_air_date || response.release_date}}</h5>
-        <h5>{{response.status}}</h5>
-        <p>{{response.overview}}</p>
-        <p>{{response.runtime==0 ? 'no runtime data!' : response.runtime}}</p>
+        <h5>{{response.first_air_date || response.release_date || undefined }}</h5>
+        <h5>{{response.status || undefined}}</h5>
+        <p>{{response.overview || undefined}}</p>
+        <p>{{response.runtime==0 ? 'no runtime data!' : response.runtime  || undefined}}</p>
         <div id="genreContainer" *ngFor="let genre of response.genres">
-            <p class="genre">{{genre.name}}</p>
+            <p class="genre">{{genre.name  || undefined}}</p>
         </div>
         <div class="seasonContainer">
             <ng-container *ngFor="let season of response.seasons; index as i">
-            <a style="cursor:pointer" (click)="toSeasonDetailsPage(season.season_number)">
+            <a style="cursor:pointer" (click)="toSeasonDetailsPage(season?.season_number)">
                 <img 
                 class="SeasonImage"
                 src="{{season.poster_path!=null ? 'https://image.tmdb.org/t/p/original'+season?.poster_path : 'assets/img/fallbackIMG.svg'}}"
-                alt="Poster for the {{season.name}} Arc" 
+                alt="Poster for the {{season.name  || undefined}} Arc" 
                 loading="lazy"
                 width="200px"
                 />

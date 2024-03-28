@@ -33,12 +33,9 @@ export class SeasonDetailsComponent {
         .subscribe((params: Params) => {
             let id = +params['id'];
             let seasonNum = +params['num'];
-            console.log(id)
-            console.log(seasonNum)
-
 
             this.getSeasonDetailsCall(id, seasonNum)
-            
+
         });
 
          

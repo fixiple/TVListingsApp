@@ -1,6 +1,9 @@
 /*https://www.digitalocean.com/community/tutorials/how-to-use-opacity-and-transparency-to-create-a-modal-in-css*/
+
+
 .modal-container{
-    position: relative;
+    background-color: black;
+    position: fixed;
     top: 0;
     right: 0;
     z-index: 1000;
@@ -8,5 +11,7 @@
 
 .modal-container > *{
     display: flex;
+    color: white;
     align-self: center;
 }
+

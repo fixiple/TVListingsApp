@@ -11,17 +11,17 @@
         loading="lazy"
         width="200px"
         />
-        <div>
-        <ng-container *ngFor="let episode of response.episodes; index as i">
-            <p>{{episode.name}}</p>
-            <img 
-                class="SeasonImage"
-                src="{{episode.still_path!=null ? 'https://image.tmdb.org/t/p/original'+episode.still_path : 'assets/img/fallbackIMG.svg'}}"
-                alt="Poster for the {{episode.name}} Arc" 
-                loading="lazy"
-                width="200px"
-                />
-        </ng-container>
+        <div class="verticalscroll">
+            <ng-container *ngFor="let episode of response.episodes; index as i">
+                <p>{{episode.name}}</p>
+                <img 
+                    class="SeasonImage"
+                    src="{{episode.still_path!=null ? 'https://image.tmdb.org/t/p/original'+episode.still_path : 'assets/img/fallbackIMG.svg'}}"
+                    alt="Poster for the {{episode.name}} Arc" 
+                    loading="lazy"
+                    width="200px"
+                    />
+            </ng-container>
         </div>
     </div>
 </div>

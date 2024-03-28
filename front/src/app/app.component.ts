@@ -22,10 +22,13 @@ constructor(public dialog: MatDialog){}
   openModalView(){
         this.dialog.open(DialogBoxComponent, {
             width: '250px',
-          data: {
-            animal: 'panda',
-          },
-          backdropClass: 'backdropBackground'
+            height: '100%',
+            maxHeight: '1980px',
+            maxWidth: '350px',
+            backdropClass: 'backdropBackground',
+            data: {
+                animal: 'panda',
+            }
         });
     }
 }

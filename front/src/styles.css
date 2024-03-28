@@ -128,3 +128,10 @@ th{
     filter: blur(10px);
     opacity: 0.7 !important;
 }
+
+
+.verticalscroll{
+    height: 890px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
